@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "My Books";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>This page displays all your books.</p>
+
+@model List<Books>
+
+<h1>My Books</h1>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Pages</th>
+        <th>Pages Read</th>
+        <th>Summary</th>
+    </tr>
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.Title</td>
+            <td>@book.Author</td>
+            <td>@book.IsbnNumber</td>
+            <td>@book.Pages</td>
+            <td>@book.PagesRead</td>
+            <td>@book.Summary</td>
+        </tr>
+    }
+</table>
