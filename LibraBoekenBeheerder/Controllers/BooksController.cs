@@ -10,51 +10,45 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly IConfiguration _configuration;
-
-        public BooksController(IConfiguration configuration)
+        // GET: Student/Create
+        public ActionResult Create()
         {
-            _configuration = configuration;
+            return View();
         }
-
-        public ActionResult Index()  
-        {  
-            List<Books> mybooksList = new List<Books>();
-            string connstring = _configuration.GetConnectionString("MyConnectionString");
-
-            using (SqlConnection con = new SqlConnection(connstring))  
-            {  
-                SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.Books", con);  
-                cmd.CommandType = CommandType.Text;  
-                con.Open();  
-   
-                SqlDataReader rdr = cmd.ExecuteReader();  
-                while (rdr.Read())
-                {
-                    var book = new Books(); 
-   
-                    book.BookId = Convert.ToInt32(rdr["BookId"]);  
-                    book.Title = rdr["title"].ToString();  
-                    book.Author = rdr["author"].ToString();  
-                    book.ISBNNumber = rdr["isbnnumber"].ToString();   
-                    book.Pages = Convert.ToInt32(rdr["pages"]);   
-                    book.PagesRead = Convert.ToInt32(rdr["pagesread"]);   
-                    book.Summary =rdr["summary"].ToString(); 
-                    mybooksList.Add(book);  
-                }  
-            }  
-            return View(mybooksList);   
-        }
-
+ 
+        // POST: Student/Create
         [HttpPost]
-        public ActionResult CreateBook(Books bookmodel)
+        public ActionResult Create(BooksModel booksModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //TODO: SubscribeUser(model.Email);
+                if (ModelState.IsValid)
+                {
+                    DBHandel sdb = new DBHandel();
+                    if (sdb.CreateBook(booksModel))
+                    {
+                        ViewBag.Message = "Student Details Added Successfully";
+                        ModelState.Clear();
+                    }
+                }
+                return View();
             }
-
-            return View("Index", bookmodel);
+            catch
+            {
+                return View();
+            }
         }
+
+        // public bool MayBookBeCreated(string title)
+        // {
+        //     bool result = false;
+        //     if (!string.IsNullOrEmpty(title))
+        //     {
+        //         result = true;
+        //     }
+        //
+        //     return result;
+        // }
+        
     }
 }

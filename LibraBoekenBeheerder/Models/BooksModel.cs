@@ -16,4 +16,7 @@ public class BooksModel
     public int? PagesRead { get; set; }
 
     public string Summary { get; set; }
+    
+    
+    
 }
