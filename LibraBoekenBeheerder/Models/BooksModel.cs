@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace LibraBoekenBeheerder.Models;
 public class BooksModel
 {
     public int BookId { get; set; }
