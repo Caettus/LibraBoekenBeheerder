@@ -91,7 +91,7 @@ namespace LibraBoekenBeheerder.Controllers
         public bool CreateBook(BooksModel booksModel)
         {
             connection();
-            SqlCommand cmd = new SqlCommand("INSERT INTO dbo.Books values (@Title, @Author, @ISBNNumber)", con);
+            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber]) VALUES ('@Title', '@Author', '@ISBNNumber');", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@Title", booksModel.Title);
