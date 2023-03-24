@@ -24,7 +24,7 @@ namespace LibraBoekenBeheerder.Controllers
 
             using (SqlConnection con = new SqlConnection(connstring))  
             {  
-                SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.book", con);  
+                SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.Books", con);  
                 cmd.CommandType = CommandType.Text;  
                 con.Open();  
    
@@ -33,10 +33,10 @@ namespace LibraBoekenBeheerder.Controllers
                 {
                     var book = new Books(); 
    
-                    book.Id = Convert.ToInt32(rdr["Id"]);  
+                    book.BookId = Convert.ToInt32(rdr["BookId"]);  
                     book.Title = rdr["title"].ToString();  
                     book.Author = rdr["author"].ToString();  
-                    book.IsbnNumber = rdr["isbnnumber"].ToString();   
+                    book.ISBNNumber = rdr["isbnnumber"].ToString();   
                     book.Pages = Convert.ToInt32(rdr["pages"]);   
                     book.PagesRead = Convert.ToInt32(rdr["pagesread"]);   
                     book.Summary =rdr["summary"].ToString(); 
@@ -44,6 +44,17 @@ namespace LibraBoekenBeheerder.Controllers
                 }  
             }  
             return View(mybooksList);   
-        }  
+        }
+
+        [HttpPost]
+        public ActionResult CreateBook(Books bookmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                //TODO: SubscribeUser(model.Email);
+            }
+
+            return View("Index", bookmodel);
+        }
     }
 }

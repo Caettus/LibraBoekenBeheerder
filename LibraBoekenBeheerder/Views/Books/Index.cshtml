@@ -1,13 +1,35 @@
 @{
     ViewData["Title"] = "My Books";
 }
+@model LibraBoekenBeheerder.Controllers.BooksController;
+
+<form asp-controller="BooksController" asp-action="Index" method="get">
+    <p>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<style>
+    body {
+        background-color: #fff;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #016d45;
+        color: #fff;
+    }
+</style>
+
 <h1>@ViewData["Title"]</h1>
-
-<p>This page displays all your books.</p>
-
-@model List<Books>
-
-<h1>My Books</h1>
 
 <table>
     <tr>
@@ -23,7 +45,7 @@
         <tr>
             <td>@book.Title</td>
             <td>@book.Author</td>
-            <td>@book.IsbnNumber</td>
+            <td>@book.ISBNNumber</td>
             <td>@book.Pages</td>
             <td>@book.PagesRead</td>
             <td>@book.Summary</td>
