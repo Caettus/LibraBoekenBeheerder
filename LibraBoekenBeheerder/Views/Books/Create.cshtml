@@ -5,7 +5,7 @@
 {
     @Html.AntiForgeryToken()
     
-    <form action="">
+    <form asp-controller="BooksController" asp-action="Create(model)">
         <div class="form-horizontal">
                 <h5>Add a Book</h5>
                 <hr />

@@ -17,7 +17,6 @@ namespace LibraBoekenBeheerder.Controllers
             _configuration = configuration;
         }
 
-
         // GET: Student/Create
         public ActionResult Create()
         {
@@ -31,8 +30,8 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    BooksController sdb = new BooksController(_configuration);
-                    if (sdb.CreateBook(booksModel))
+                    BooksController bookcontroller = new BooksController(_configuration);
+                    if (bookcontroller.CreateBook(booksModel))
                     {
                         ViewBag.Message = "Book has been Added Successfully";
                         ModelState.Clear();
@@ -41,6 +40,10 @@ namespace LibraBoekenBeheerder.Controllers
                     {
                         ViewBag.Message = "Error occurred while creating the book";
                     }
+                }
+                else if (!ModelState.IsValid)
+                {
+                    ViewBag.Message = "Fucking kutding";
                 }
             }
             catch
@@ -52,14 +55,12 @@ namespace LibraBoekenBeheerder.Controllers
             return View(booksModel);
         }
 
-
         private SqlConnection con;
         private void connection()
         {
             string connstring = _configuration.GetConnectionString("MyConnectionString");
             con = new SqlConnection(connstring);
         }
-
 
         public ActionResult Index()
         {

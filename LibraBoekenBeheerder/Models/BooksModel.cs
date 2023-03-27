@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LibraBoekenBeheerder.Models;
 public class BooksModel
@@ -15,6 +16,8 @@ public class BooksModel
     public int? Pages { get; set; }
 
     public int? PagesRead { get; set; }
+
+    [AllowNull]
 
     public string Summary { get; set; }
     
