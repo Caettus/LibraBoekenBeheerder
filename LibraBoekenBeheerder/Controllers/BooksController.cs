@@ -24,7 +24,6 @@ namespace LibraBoekenBeheerder.Controllers
             return View();
         }
  
-        // POST: Student/Create
         [HttpPost]
         public ActionResult Create(BooksModel booksModel)
         {
@@ -38,14 +37,21 @@ namespace LibraBoekenBeheerder.Controllers
                         ViewBag.Message = "Book has been Added Successfully";
                         ModelState.Clear();
                     }
+                    else
+                    {
+                        ViewBag.Message = "Error occurred while creating the book";
+                    }
                 }
-                return View();
             }
             catch
             {
-                return View();
+                ViewBag.Message = "Error occurred while creating the book";
             }
+
+            // Return the view with the booksModel object passed as parameter
+            return View(booksModel);
         }
+
 
         private SqlConnection con;
         private void connection()
@@ -91,8 +97,8 @@ namespace LibraBoekenBeheerder.Controllers
         public bool CreateBook(BooksModel booksModel)
         {
             connection();
-            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber]) VALUES ('@Title', '@Author', '@ISBNNumber');", con);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber]) VALUES (@Title, @Author, @ISBNNumber);", con);
+            cmd.CommandType = CommandType.Text;
 
             cmd.Parameters.AddWithValue("@Title", booksModel.Title);
             cmd.Parameters.AddWithValue("@Author", booksModel.Author);
@@ -107,6 +113,7 @@ namespace LibraBoekenBeheerder.Controllers
             else
                 return false;
         }
+
 
         // public bool MayBookBeCreated(string title)
         // {
