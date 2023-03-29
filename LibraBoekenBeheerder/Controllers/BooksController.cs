@@ -43,7 +43,7 @@ namespace LibraBoekenBeheerder.Controllers
                 }
                 else if (!ModelState.IsValid)
                 {
-                    ViewBag.Message = "Fucking kutding";
+                    ViewBag.Message = "Error: Model state is not valid \n:( Please contact our helpdesk!";
                 }
             }
             catch
@@ -117,18 +117,5 @@ namespace LibraBoekenBeheerder.Controllers
             else
                 return false;
         }
-
-
-        // public bool MayBookBeCreated(string title)
-        // {
-        //     bool result = false;
-        //     if (!string.IsNullOrEmpty(title))
-        //     {
-        //         result = true;
-        //     }
-        //
-        //     return result;
-        // }
-
     }
 }
