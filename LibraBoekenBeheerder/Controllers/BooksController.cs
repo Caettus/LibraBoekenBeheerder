@@ -98,15 +98,18 @@ namespace LibraBoekenBeheerder.Controllers
         public bool CreateBook(BooksModel booksModel)
         {
             connection();
-            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber]) VALUES (@Title, @Author, @ISBNNumber);", con);
+            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead);", con);
             cmd.CommandType = CommandType.Text;
 
             cmd.Parameters.AddWithValue("@Title", booksModel.Title);
             cmd.Parameters.AddWithValue("@Author", booksModel.Author);
             cmd.Parameters.AddWithValue("@ISBNNumber", booksModel.ISBNNumber);
+            cmd.Parameters.AddWithValue("@Summary", booksModel.Summary);
+            cmd.Parameters.AddWithValue("@Pages", booksModel.Pages);
+            cmd.Parameters.AddWithValue("@PagesRead", booksModel.PagesRead);
 
             con.Open();
-            int i = cmd.ExecuteNonQuery();
+            var i = cmd.ExecuteNonQuery();
             con.Close();
 
             if (i >= 1)
