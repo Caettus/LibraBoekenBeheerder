@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraBoekenBeheerder", "LibraBoekenBeheerder\LibraBoekenBeheerder.csproj", "{A07F0E70-AD3F-48D5-B96C-1BC5E9FBBA3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraDB", "LibraDB\LibraDB.csproj", "{411029FA-0A87-4124-96B8-BD9504033399}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraDB", "LibraDB\LibraDB.csproj", "{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{A07F0E70-AD3F-48D5-B96C-1BC5E9FBBA3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A07F0E70-AD3F-48D5-B96C-1BC5E9FBBA3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A07F0E70-AD3F-48D5-B96C-1BC5E9FBBA3C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{411029FA-0A87-4124-96B8-BD9504033399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{411029FA-0A87-4124-96B8-BD9504033399}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{411029FA-0A87-4124-96B8-BD9504033399}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{411029FA-0A87-4124-96B8-BD9504033399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

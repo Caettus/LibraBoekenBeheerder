@@ -4,14 +4,18 @@ using System.Diagnostics.CodeAnalysis;
 namespace LibraBoekenBeheerder.Models;
 public class BooksModel
 {
-    public int BookId { get; set; }
+        [Key]
+        public int BookId { get; set; }
 
-    [Required]
-    public string Title { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string Title { get; set; }
 
-    public string? Author { get; set; }
+        [StringLength(100)]
+        public string Author { get; set; }
 
-    public string? ISBNNumber { get; set; }
+        [StringLength(13)]
+        public string ISBNNumber { get; set; }
 
     public int? Pages { get; set; }
 

@@ -3,9 +3,10 @@
  
 @using (Html.BeginForm()) 
 {
+
     @Html.AntiForgeryToken()
     
-    <form asp-controller="BooksController" asp-action="Create(model)">
+    <form asp-controller="BooksDAL" asp-action="Create(model)">
         <div class="form-horizontal">
                 <h5>Add a Book</h5>
                 <hr />
