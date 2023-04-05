@@ -1,7 +1,5 @@
 using System.Data;
-using LibraBoekenBeheerder.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
 namespace LibraDB;
@@ -14,6 +12,10 @@ public class BooksDAL
     {
         _configuration = configuration;
     }
+    public BooksDAL()
+    {
+
+    }
     private SqlConnection con;
         private void connection()
         {
@@ -21,7 +23,7 @@ public class BooksDAL
             con = new SqlConnection(connstring);
         }
 
-        public ActionResult Index()
+        public List<BooksDTO> GetAllBooks()
         {
             List<BooksDTO> mybooksList = new List<BooksDTO>();
 
@@ -49,22 +51,23 @@ public class BooksDAL
                     mybooksList.Add(book);
                 }
             }
-            return View(mybooksList);
+            con.Close();
+            return mybooksList;
         }
 
 
-        public bool CreateBook(BooksModel booksModel)
+        public bool CreateBook(BooksDTO booksDTO)
         {
             connection();
             SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead);", con);
             cmd.CommandType = CommandType.Text;
 
-            cmd.Parameters.AddWithValue("@Title", booksModel.Title);
-            cmd.Parameters.AddWithValue("@Author", booksModel.Author);
-            cmd.Parameters.AddWithValue("@ISBNNumber", booksModel.ISBNNumber);
-            cmd.Parameters.AddWithValue("@Summary", booksModel.Summary);
-            cmd.Parameters.AddWithValue("@Pages", booksModel.Pages);
-            cmd.Parameters.AddWithValue("@PagesRead", booksModel.PagesRead);
+            cmd.Parameters.AddWithValue("@Title", booksDTO.Title);
+            cmd.Parameters.AddWithValue("@Author", booksDTO.Author);
+            cmd.Parameters.AddWithValue("@ISBNNumber", booksDTO.ISBNNumber);
+            cmd.Parameters.AddWithValue("@Summary", booksDTO.Summary);
+            cmd.Parameters.AddWithValue("@Pages", booksDTO.Pages);
+            cmd.Parameters.AddWithValue("@PagesRead", booksDTO.PagesRead);
 
             con.Open();
             var i = cmd.ExecuteNonQuery();
@@ -75,5 +78,4 @@ public class BooksDAL
             else
                 return false;
         }
-    }
 }
