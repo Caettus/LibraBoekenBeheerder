@@ -17,6 +17,7 @@ public class BooksDAL
 
     }
     private SqlConnection con;
+        
         private void connection()
         {
             string connstring = _configuration.GetConnectionString("MyConnectionString");
