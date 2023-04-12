@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "My Collections";
+}
+@model List<CollectionsModel>;
+
+<p>
+    @Html.ActionLink("Create Collection", "Create")
+</p>
+
+<style>
+    body {
+        background-color: #fff;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #016d45;
+        color: #fff;
+    }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<table>
+    <tr>
+        <th>Collection Number</th>
+        <th>Name</th>
+    </tr>
+    @foreach (var collection in Model)
+    {
+        <tr>
+            <td>@collection.CollectionID</td>
+            <td>@collection.Name</td>
+        </tr>
+    }
+</table>

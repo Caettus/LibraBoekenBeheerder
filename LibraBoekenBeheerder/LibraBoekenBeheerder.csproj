@@ -14,10 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Views\Collections" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\LibraDB\LibraDB.csproj" />
     </ItemGroup>
 

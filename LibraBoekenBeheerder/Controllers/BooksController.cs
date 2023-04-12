@@ -58,8 +58,11 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Index(BooksModel booksModel)
         {
             var dto = _booksMapper.toDTO(booksModel);
+            
             List<BooksModel> booksList = new List<BooksModel>();
+            
             var dtoList = _booksDAL.GetAllBooks();
+            
             foreach (var dtoItem in dtoList)
             {
                 var modelItem = _booksMapper.toModel(dtoItem);
