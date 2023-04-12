@@ -45,9 +45,18 @@ public class BooksDAL
                 book.Pages = Convert.ToInt32(rdr["pages"]);
                 book.PagesRead = Convert.ToInt32(rdr["pagesread"]);
                 book.Summary = rdr["summary"].ToString();
-
-                // add explicit null check
-                if (book != null)
+                
+                 if (rdr["CollectionID"] != System.DBNull.Value)
+                 {
+                    book.CollectionID = Convert.ToInt32(rdr["CollectionID"]);
+                 }
+                 else
+                 {
+                book.CollectionID = 0;
+                 }
+        
+            // add explicit null check
+            if (book != null)
                 {
                     mybooksList.Add(book);
                 }
@@ -60,7 +69,7 @@ public class BooksDAL
         public bool CreateBook(BooksDTO booksDTO)
         {
             connection();
-            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead);", con);
+            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead], [CollectionID]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead, @CollectionID);", con);
             cmd.CommandType = CommandType.Text;
 
             cmd.Parameters.AddWithValue("@Title", booksDTO.Title);
@@ -69,6 +78,7 @@ public class BooksDAL
             cmd.Parameters.AddWithValue("@Summary", booksDTO.Summary);
             cmd.Parameters.AddWithValue("@Pages", booksDTO.Pages);
             cmd.Parameters.AddWithValue("@PagesRead", booksDTO.PagesRead);
+        cmd.Parameters.AddWithValue("@CollectionID", booksDTO.CollectionID);
 
             con.Open();
             var i = cmd.ExecuteNonQuery();
