@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using LibraDB;
+using LibraLogic;
 
 namespace LibraBoekenBeheerder.Controllers
 {
@@ -13,6 +14,7 @@ namespace LibraBoekenBeheerder.Controllers
     {
 
         BooksDAL booksDAL = new BooksDAL();
+        BooksMapper _booksMapper = new BooksMapper();
         // GET: Student/Create
         public ActionResult Create()
         {
@@ -26,7 +28,8 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (BooksDAL.CreateBook(booksModel))
+                    var dto = _booksMapper.toDTO(booksModel);
+                    if (booksDAL.CreateBook(dto))
                     {
                         ViewBag.Message = "Book has been Added Successfully";
                         ModelState.Clear();

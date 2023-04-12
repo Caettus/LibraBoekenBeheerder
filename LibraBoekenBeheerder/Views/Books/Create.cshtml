@@ -1,4 +1,5 @@
 @model LibraBoekenBeheerder.Models.BooksModel
+
  
  
 @using (Html.BeginForm()) 
@@ -6,7 +7,7 @@
 
     @Html.AntiForgeryToken()
     
-    <form asp-controller="BooksDAL" asp-action="Create(model)">
+    <form asp-controller="BooksController" asp-action="Create">
         <div class="form-horizontal">
                 <h5>Add a Book</h5>
                 <hr />

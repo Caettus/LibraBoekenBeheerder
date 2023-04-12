@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraBoekenBeheerder", "Lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraDB", "LibraDB\LibraDB.csproj", "{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraLogic", "LibraLogic\LibraLogic.csproj", "{5E78070C-F62A-427F-88E7-778945118F04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraLogic", "LibraLogic\LibraLogic.csproj", "{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E78070C-F62A-427F-88E7-778945118F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E78070C-F62A-427F-88E7-778945118F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E78070C-F62A-427F-88E7-778945118F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E78070C-F62A-427F-88E7-778945118F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
