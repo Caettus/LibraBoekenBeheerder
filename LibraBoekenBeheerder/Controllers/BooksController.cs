@@ -71,6 +71,6 @@ namespace LibraBoekenBeheerder.Controllers
 
             return View(booksList);
         }
-
+        //TODO: 1. in de view loop door alle collections heen waar het boek deel van is, 2. in de controller voeg een list van colllections toe aan viewbag 3. in bookDAL al die collecties ophalen
     }
 }

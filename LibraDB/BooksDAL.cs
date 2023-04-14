@@ -46,16 +46,15 @@ public class BooksDAL
                 book.PagesRead = Convert.ToInt32(rdr["pagesread"]);
                 book.Summary = rdr["summary"].ToString();
                 
-                 if (rdr["CollectionID"] != System.DBNull.Value)
-                 {
-                    book.CollectionID = Convert.ToInt32(rdr["CollectionID"]);
-                 }
-                 else
-                 {
-                book.CollectionID = 0;
-                 }
+                if (rdr["CollectionID"] != System.DBNull.Value)
+                {
+                   book.CollectionID = Convert.ToInt32(rdr["CollectionID"]);
+                }
+                else
+                {
+                   book.CollectionID = 0;
+                }
         
-            // add explicit null check
             if (book != null)
                 {
                     mybooksList.Add(book);
