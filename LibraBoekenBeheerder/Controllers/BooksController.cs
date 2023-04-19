@@ -55,30 +55,31 @@ namespace LibraBoekenBeheerder.Controllers
             return View(booksModel);
         }
 
-        // [HttpGet]
-        // public ActionResult Details(BooksModel booksModel, int id)
-        // {
-        //     try
-        //     {
-        //         if (ModelState.IsValid)
-        //         {
-        //             var dto = _booksMapper.toDTO(booksModel);
-        //             if (_booksDAL.GetABook(id))
-        //             {
-        //                 ModelState.Clear();
-        //             }
-        //             else
-        //             {
-        //                 ViewBag.Message = "koekje";
-        //             }
-        //         }
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         ViewBag.Message = $"Exception: {e}";
-        //         throw;
-        //     }
-        // }
+        [HttpGet]
+        public ActionResult Details(int id = 0)
+        {
+            try
+            {
+                var bookDto = _booksDAL.GetABook(id);
+
+                if (bookDto != null)
+                {
+                    var booksMapper = new BooksMapper();
+                    var bookModel = booksMapper.toModel(bookDto);
+                    return View(bookModel);
+                }
+                else
+                {
+                    return Content("Book not found!");
+                }
+
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = $"Exception: {e}";
+                throw;
+            }
+        }
 
         [HttpGet]
         public ActionResult Index(BooksModel booksModel)

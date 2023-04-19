@@ -1,8 +1,60 @@
-@model TModel
+﻿@model LibraBoekenBeheerder.Models.BooksModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewData["Title"] = "Details";
 }
 
-<h2>title</h2>
+<h1>Details</h1>
+
+<div>
+    <h4>BooksModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BookId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BookId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ISBNNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ISBNNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Pages)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Pages)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PagesRead)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PagesRead)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Summary)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Summary)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
