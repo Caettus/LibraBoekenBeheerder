@@ -24,6 +24,8 @@ public class BooksDAL
             con = new SqlConnection(connstring);
         }
 
+
+
         public List<BooksDTO> GetAllBooks()
         {
             List<BooksDTO> mybooksList = new List<BooksDTO>();
@@ -45,15 +47,6 @@ public class BooksDAL
                 book.Pages = Convert.ToInt32(rdr["pages"]);
                 book.PagesRead = Convert.ToInt32(rdr["pagesread"]);
                 book.Summary = rdr["summary"].ToString();
-                
-                if (rdr["CollectionID"] != System.DBNull.Value)
-                {
-                   book.CollectionID = Convert.ToInt32(rdr["CollectionID"]);
-                }
-                else
-                {
-                   book.CollectionID = 0;
-                }
         
             if (book != null)
                 {
@@ -64,7 +57,32 @@ public class BooksDAL
             return mybooksList;
         }
 
+        public BooksDTO GetABook(int id)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.Books WHERE BookId = @id", con);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.CommandType = CommandType.Text;
+            con.Open();
 
+            SqlDataReader rdr = cmd.ExecuteReader();
+            BooksDTO book = null;
+            if (rdr.Read())
+            {
+                book = new BooksDTO();
+                book.BookId = Convert.ToInt32(rdr["BookId"]);
+                book.Title = rdr["title"].ToString();
+                book.Author = rdr["author"].ToString();
+                book.ISBNNumber = rdr["isbnnumber"].ToString();
+                book.Pages = Convert.ToInt32(rdr["pages"]);
+                book.PagesRead = Convert.ToInt32(rdr["pagesread"]);
+                book.Summary = rdr["summary"].ToString();
+            }
+            con.Close();
+            return book;
+        }
+
+        
         public bool CreateBook(BooksDTO booksDTO)
         {
             connection();
@@ -77,7 +95,7 @@ public class BooksDAL
             cmd.Parameters.AddWithValue("@Summary", booksDTO.Summary);
             cmd.Parameters.AddWithValue("@Pages", booksDTO.Pages);
             cmd.Parameters.AddWithValue("@PagesRead", booksDTO.PagesRead);
-        cmd.Parameters.AddWithValue("@CollectionID", booksDTO.CollectionID);
+            cmd.Parameters.AddWithValue("@CollectionID", booksDTO.CollectionID);
 
             con.Open();
             var i = cmd.ExecuteNonQuery();

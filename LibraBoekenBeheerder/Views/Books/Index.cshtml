@@ -36,7 +36,7 @@
         <th>Pages</th>
         <th>Pages Read</th>
         <th>Summary</th>
-        <th>CollectionID</th>
+        <th>Details</th>
     </tr>
     @foreach (var book in Model)
     {
@@ -47,9 +47,10 @@
             <td>@book.Pages</td>
             <td>@book.PagesRead</td>
             <td>@book.Summary</td>
-            <td>@book.CollectionID</td>
+
         </tr>
     }
+    
 
     
 </table>

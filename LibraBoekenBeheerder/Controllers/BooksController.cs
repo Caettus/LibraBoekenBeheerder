@@ -12,7 +12,7 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-
+        
         private readonly BooksDAL _booksDAL;
 
         public BooksController(IConfiguration configuration)
@@ -26,6 +26,7 @@ namespace LibraBoekenBeheerder.Controllers
         {
             return View();
         }
+        
 
         [HttpPost]
         public ActionResult Create(BooksModel booksModel)
@@ -54,6 +55,31 @@ namespace LibraBoekenBeheerder.Controllers
             return View(booksModel);
         }
 
+        // [HttpGet]
+        // public ActionResult Details(BooksModel booksModel, int id)
+        // {
+        //     try
+        //     {
+        //         if (ModelState.IsValid)
+        //         {
+        //             var dto = _booksMapper.toDTO(booksModel);
+        //             if (_booksDAL.GetABook(id))
+        //             {
+        //                 ModelState.Clear();
+        //             }
+        //             else
+        //             {
+        //                 ViewBag.Message = "koekje";
+        //             }
+        //         }
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         ViewBag.Message = $"Exception: {e}";
+        //         throw;
+        //     }
+        // }
+
         [HttpGet]
         public ActionResult Index(BooksModel booksModel)
         {
@@ -68,9 +94,11 @@ namespace LibraBoekenBeheerder.Controllers
                 var modelItem = _booksMapper.toModel(dtoItem);
                 booksList.Add(modelItem);
             }
-
+            
             return View(booksList);
         }
-        //TODO: 1. in de view loop door alle collections heen waar het boek deel van is, 2. in de controller voeg een list van colllections toe aan viewbag 3. in bookDAL al die collecties ophalen
+        //TODO: 1. in de view loop door alle collections heen waar het boek deel van is,
+        //2. in de controller voeg een list van colllections toe aan viewbag
+        //3. in bookDAL al die collecties ophalen
     }
 }
