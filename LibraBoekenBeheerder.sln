@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraDB", "LibraDB\LibraDB.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraLogic", "LibraLogic\LibraLogic.csproj", "{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraDALInterface", "LibraDALInterface\LibraDALInterface.csproj", "{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraDTO", "LibraDTO\LibraDTO.csproj", "{7A258CC2-BE57-472B-9DD9-9BE073378E86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A258CC2-BE57-472B-9DD9-9BE073378E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A258CC2-BE57-472B-9DD9-9BE073378E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A258CC2-BE57-472B-9DD9-9BE073378E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A258CC2-BE57-472B-9DD9-9BE073378E86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
