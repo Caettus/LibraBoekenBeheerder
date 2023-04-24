@@ -95,7 +95,6 @@ namespace LibraBoekenBeheerder.Controllers
                 var modelItem = _booksMapper.toModel(dtoItem);
                 booksList.Add(modelItem);
             }
-            
             return View(booksList);
         }
         //TODO: 1. in de view loop door alle collections heen waar het boek deel van is,

@@ -23,8 +23,7 @@ public class BooksDAL
             string connstring = _configuration.GetConnectionString("MyConnectionString");
             con = new SqlConnection(connstring);
         }
-
-
+        
 
         public List<BooksDTO> GetAllBooks()
         {
@@ -105,5 +104,15 @@ public class BooksDAL
                 return true;
             else
                 return false;
+        }
+
+        public BooksDTO GetCollectionsNotContainingBook(int id)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand(
+                "SELECT c.CollectionID, c.Name " +
+                       "FROM Collection c " +
+                       "LEFT JOIN CollectionBooks cb ON c.CollectionID = cb.CollectionID AND cb.BookId = @bookId " +
+                       "WHERE cb.BookId IS NULL");
         }
 }
