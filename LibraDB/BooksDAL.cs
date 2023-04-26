@@ -116,7 +116,7 @@ public class BooksDAL
                    "FROM Collection c " +
                    "LEFT JOIN CollectionBooks cb ON c.CollectionID = cb.CollectionID AND cb.BookId = @bookId " +
                    "WHERE cb.BookId IS NULL", con);
-        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.AddWithValue("@bookId", id);
         cmd.CommandType = CommandType.Text;
         con.Open();
         SqlDataReader rdr = cmd.ExecuteReader();

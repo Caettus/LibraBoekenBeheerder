@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using LibraDB;
 using LibraLogic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LibraBoekenBeheerder.Controllers
 {
@@ -36,6 +37,19 @@ namespace LibraBoekenBeheerder.Controllers
                 if (ModelState.IsValid)
                 {
                     var dto = _booksMapper.toDTO(booksModel);
+                    
+                    //Moet dit hier?
+                    int id = 0;
+                    var collectionDropDownList = _booksDAL.GetCollectionsNotContainingBook(id);
+            
+                    List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+                    {
+                        Text = cddl.Name.ToString()
+                    }).ToList();
+
+                    ViewBag.collectionDropDownList = items;
+                    //Vast wel
+                    
                     if (_booksDAL.CreateBook(dto))
                     {
                         ViewBag.Message = "Book has been Added Successfully";
@@ -47,9 +61,9 @@ namespace LibraBoekenBeheerder.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-                ViewBag.Message = "Error occurred while creating the book";
+                ViewBag.Error = $"Error occured while creating the book: {e.Message}";
             }
 
             return View(booksModel);
@@ -66,6 +80,16 @@ namespace LibraBoekenBeheerder.Controllers
                 {
                     var booksMapper = new BooksMapper();
                     var bookModel = booksMapper.toModel(bookDto);
+                    //Moet dit hier?
+                    var collectionDropDownList = _booksDAL.GetCollectionsNotContainingBook(id);
+            
+                    List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+                    {
+                        Text = cddl.Name.ToString()
+                    }).ToList();
+
+                    ViewBag.collectionDropDownList = items;
+                    //Vast wel
                     return View(bookModel);
                 }
                 else
@@ -85,10 +109,8 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Index(BooksModel booksModel)
         {
             var dto = _booksMapper.toDTO(booksModel);
-            
-            List<BooksModel> booksList = new List<BooksModel>();
-            
             var dtoList = _booksDAL.GetAllBooks();
+            List<BooksModel> booksList = new List<BooksModel>();
             
             foreach (var dtoItem in dtoList)
             {
