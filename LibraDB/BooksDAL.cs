@@ -124,7 +124,7 @@ public class BooksDAL
         {
             var collection = new CollectionsDTO();
 
-            collection.CollectionsID = Convert.ToInt32(rdr["CollectionsID"]);
+            collection.CollectionsID = Convert.ToInt32(rdr["CollectionID"]);
             collection.Name = rdr["Name"].ToString();
             collectionlist.Add(collection);
 
@@ -132,4 +132,5 @@ public class BooksDAL
         con.Close();
         return collectionlist;
     }
+
 }
