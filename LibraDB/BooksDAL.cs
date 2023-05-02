@@ -106,31 +106,4 @@ public class BooksDAL
         else
             return false;
     }
-
-    public List<CollectionsDTO> GetCollectionsNotContainingBook(int id)
-    {
-        List<CollectionsDTO> collectionlist = new List<CollectionsDTO>();
-        connection();
-        SqlCommand cmd = new SqlCommand(
-                   "SELECT c.CollectionID, c.Name " +
-                   "FROM Collection c " +
-                   "LEFT JOIN CollectionBooks cb ON c.CollectionID = cb.CollectionID AND cb.BookId = @bookId " +
-                   "WHERE cb.BookId IS NULL", con);
-        cmd.Parameters.AddWithValue("@bookId", id);
-        cmd.CommandType = CommandType.Text;
-        con.Open();
-        SqlDataReader rdr = cmd.ExecuteReader();
-        while (rdr.Read())
-        {
-            var collection = new CollectionsDTO();
-
-            collection.CollectionsID = Convert.ToInt32(rdr["CollectionID"]);
-            collection.Name = rdr["Name"].ToString();
-            collectionlist.Add(collection);
-
-        }
-        con.Close();
-        return collectionlist;
-    }
-
 }
