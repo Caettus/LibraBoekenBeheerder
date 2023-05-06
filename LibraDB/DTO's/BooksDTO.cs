@@ -15,6 +15,5 @@ public class BooksDTO
         public int? PagesRead { get; set; }
 
         public string? Summary { get; set; }
-        public int? CollectionID { get; set; }
     
 }

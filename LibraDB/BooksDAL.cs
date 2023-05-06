@@ -86,7 +86,7 @@ public class BooksDAL
     public bool CreateBook(BooksDTO booksDTO)
     {
         connection();
-        SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead], [CollectionID]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead, @CollectionID);", con);
+        SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead);", con);
         cmd.CommandType = CommandType.Text;
 
         cmd.Parameters.AddWithValue("@Title", booksDTO.Title);
@@ -95,7 +95,6 @@ public class BooksDAL
         cmd.Parameters.AddWithValue("@Summary", booksDTO.Summary);
         cmd.Parameters.AddWithValue("@Pages", booksDTO.Pages);
         cmd.Parameters.AddWithValue("@PagesRead", booksDTO.PagesRead);
-        cmd.Parameters.AddWithValue("@CollectionID", booksDTO.CollectionID);
 
         con.Open();
         var i = cmd.ExecuteNonQuery();
