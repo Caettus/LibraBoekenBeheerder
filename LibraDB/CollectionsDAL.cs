@@ -39,14 +39,15 @@ public class CollectionsDAL
 
             collection.CollectionsID = Convert.ToInt32(dataReader["CollectionID"]);
             collection.Name = dataReader["Name"].ToString();
-            
+            mycollectionsList.Add(collection);
+
             if (collection != null)
             {
                 mycollectionsList.Add(collection);
             }
         }
         con.Close();
-        return (mycollectionsList);
+        return mycollectionsList;
     }
 
     public bool CreateCollection(CollectionsDTO collectionsDto)

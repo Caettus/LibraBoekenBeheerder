@@ -16,11 +16,13 @@ namespace LibraBoekenBeheerder.Controllers
         
         private readonly BooksDAL _booksDAL;
         private readonly CollectionBooksDAL _collectionBooksDAL;
+        private readonly CollectionsDAL _collectionsDAL;
 
         public BooksController(IConfiguration configuration)
         {
             _booksDAL = new BooksDAL(configuration);
             _collectionBooksDAL = new CollectionBooksDAL(configuration);
+            _collectionsDAL = new CollectionsDAL(configuration);    
         }
 
         BooksMapper _booksMapper = new BooksMapper();
@@ -32,35 +34,55 @@ namespace LibraBoekenBeheerder.Controllers
         
 
         [HttpPost]
-        public ActionResult Create(BooksModel booksModel)
+        public ActionResult Create(string Title, string Author, string ISBNNumber, int Pages, int PagesRead, string Summary, int SelectedCollectionId)
         {
+
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var dto = _booksMapper.toDTO(booksModel);
-                    
-                    //Moet dit hier?
-                    int id = 0;
-                    var collectionDropDownList = _collectionBooksDAL.GetCollectionsNotContainingBook(id);
-            
+                    BooksModel booksModel = new BooksModel();
+                    {
+                        booksModel.Title = Title;
+                        booksModel.Author = Author;
+                        booksModel.ISBNNumber = ISBNNumber;
+                        booksModel.Pages = Pages;
+                        booksModel.PagesRead = PagesRead;
+                        booksModel.Summary = Summary;
+                    }
+                    //add collections to dropdown list
+                    var collectionDropDownList = _collectionsDAL.GetAllCollections();
+
                     List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                     {
                         Text = cddl.Name.ToString()
                     }).ToList();
 
                     ViewBag.collectionDropDownList = items;
-                    //Vast wel
+
+                    var dto = _booksMapper.toDTO(booksModel);
                     
                     if (_booksDAL.CreateBook(dto))
                     {
-                        ViewBag.Message = "Book has been Added Successfully";
-                        ModelState.Clear();
+                        int newBookId = _booksDAL.GetLastInsertedBookId();
+                        CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
+                        if (_collectionBooksDAL.LinkBookToCollection(SelectedCollectionId, newBookId, collectionBooksDTO))
+                        {
+                            ViewBag.Message = "Book has been added successfully and linked to the collection.";
+                            ModelState.Clear();
+                        }
+                        else { ViewBag.Message = "Book Could not be created"; }
+
+
+
                     }
                     else
                     {
                         ViewBag.Message = "Error occurred while creating the book";
                     }
+
+
+
                 }
             }
             catch (Exception e)

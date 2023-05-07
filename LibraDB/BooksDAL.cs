@@ -105,4 +105,19 @@ public class BooksDAL
         else
             return false;
     }
+
+    public int GetLastInsertedBookId()
+    {
+        connection();
+        SqlCommand cmd = new SqlCommand("SELECT IDENT_CURRENT('dbo.Books')", con);
+        cmd.CommandType = CommandType.Text;
+        con.Open();
+
+        int lastInsertedId = Convert.ToInt32(cmd.ExecuteScalar());
+
+        con.Close();
+
+        return lastInsertedId;
+    }
+
 }

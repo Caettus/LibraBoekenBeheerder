@@ -18,7 +18,6 @@ public class BooksMapper
             Summary = booksModel.Summary
         };
     }
-e
     public BooksModel toModel(BooksDTO booksDto)
     {
         return new BooksModel()
