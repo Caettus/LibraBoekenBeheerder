@@ -1,3 +1,5 @@
+using LibraDB;
+
 namespace LibraLogic;
 
 public class Books
@@ -15,4 +17,12 @@ public class Books
     public int? PagesRead { get; private set; }
 
     public string? Summary { get; private set; }
+
+
+
+    public bool CreateBook()
+    {
+
+    }
+
 }

@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraBoekenBeheerder", "Lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraDB", "LibraDB\LibraDB.csproj", "{6B6722BF-8480-4FDD-AA1F-159ED784A6B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraLogic", "LibraLogic\LibraLogic.csproj", "{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraLogic", "LibraLogic\LibraLogic.csproj", "{AB90A174-123A-4B5A-90D6-BFF4BBA0CB3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraDALInterface", "LibraDALInterface\LibraDALInterface.csproj", "{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraDALInterface", "LibraDALInterface\LibraDALInterface.csproj", "{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraDTO", "LibraDTO\LibraDTO.csproj", "{3CF87BAC-8C4A-4E8A-ACC9-6D585077C0B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraFactory", "LibraFactory\LibraFactory.csproj", "{A248D8FB-1635-445B-8951-B9A76C0EFE2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +37,19 @@ Global
 		{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E2C4A12-5BAC-4003-81CD-340B1FFBF9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CF87BAC-8C4A-4E8A-ACC9-6D585077C0B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CF87BAC-8C4A-4E8A-ACC9-6D585077C0B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CF87BAC-8C4A-4E8A-ACC9-6D585077C0B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CF87BAC-8C4A-4E8A-ACC9-6D585077C0B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A248D8FB-1635-445B-8951-B9A76C0EFE2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A248D8FB-1635-445B-8951-B9A76C0EFE2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A248D8FB-1635-445B-8951-B9A76C0EFE2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A248D8FB-1635-445B-8951-B9A76C0EFE2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {47DD292F-7AA8-4968-ABE5-99AF130E7F06}
 	EndGlobalSection
 EndGlobal

@@ -29,6 +29,15 @@ namespace LibraBoekenBeheerder.Controllers
         // GET: Student/Create
         public ActionResult Create()
         {
+            //add collections to dropdown list
+            var collectionDropDownList = _collectionsDAL.GetAllCollections();
+
+            List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+            {
+                Text = cddl.Name.ToString()
+            }).ToList();
+
+            ViewBag.collectionDropDownList = items;
             return View();
         }
         
@@ -36,30 +45,19 @@ namespace LibraBoekenBeheerder.Controllers
         [HttpPost]
         public ActionResult Create(string Title, string Author, string ISBNNumber, int Pages, int PagesRead, string Summary, int SelectedCollectionId)
         {
-
+            BooksModel booksModel = new BooksModel();
+            {
+                booksModel.Title = Title;
+                booksModel.Author = Author;
+                booksModel.ISBNNumber = ISBNNumber;
+                booksModel.Pages = Pages;
+                booksModel.PagesRead = PagesRead;
+                booksModel.Summary = Summary;
+            }
             try
             {
                 if (ModelState.IsValid)
                 {
-                    BooksModel booksModel = new BooksModel();
-                    {
-                        booksModel.Title = Title;
-                        booksModel.Author = Author;
-                        booksModel.ISBNNumber = ISBNNumber;
-                        booksModel.Pages = Pages;
-                        booksModel.PagesRead = PagesRead;
-                        booksModel.Summary = Summary;
-                    }
-                    //add collections to dropdown list
-                    var collectionDropDownList = _collectionsDAL.GetAllCollections();
-
-                    List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
-                    {
-                        Text = cddl.Name.ToString()
-                    }).ToList();
-
-                    ViewBag.collectionDropDownList = items;
-
                     var dto = _booksMapper.toDTO(booksModel);
                     
                     if (_booksDAL.CreateBook(dto))
@@ -72,17 +70,11 @@ namespace LibraBoekenBeheerder.Controllers
                             ModelState.Clear();
                         }
                         else { ViewBag.Message = "Book Could not be created"; }
-
-
-
                     }
                     else
                     {
                         ViewBag.Message = "Error occurred while creating the book";
                     }
-
-
-
                 }
             }
             catch (Exception e)

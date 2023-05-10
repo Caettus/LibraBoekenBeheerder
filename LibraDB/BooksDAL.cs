@@ -13,10 +13,6 @@ public class BooksDAL
     {
         _configuration = configuration;
     }
-    public BooksDAL()
-    {
-
-    }
     private SqlConnection con;
 
     private void connection()
