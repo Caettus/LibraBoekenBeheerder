@@ -1,6 +1,7 @@
 using LibraDB;
 using LibraInterface;
 using LibraFactory;
+using Microsoft.Extensions.Configuration;
 
 namespace LibraLogic;
 
@@ -22,18 +23,18 @@ public class Books
 
     
 
-    public bool CreateBook(BooksDTO booksDto, int selectedCollectionId)
+    public bool CreateBook(BooksDTO booksDto, int selectedCollectionId, IConfiguration configuration)
     {
         try
         {
-            IBooks createBook = DALFactory.GetCreateBook();
+            IBooks createBook = DALFactory.GetCreateBook(configuration);
             if (createBook.CreateBook(booksDto))
             {
-                IBooks lastInsertedBookId = DALFactory.GetLastInsertedBookId();
+                IBooks lastInsertedBookId = DALFactory.GetLastInsertedBookId(configuration);
                 int bookId = lastInsertedBookId.GetLastInsertedBookId();
 
 
-                ICollectionBooks collectionBooksLink = DALFactory.GetLinkBookToCollection();
+                ICollectionBooks collectionBooksLink = DALFactory.GetLinkBookToCollection(configuration);
                 CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
                 if (collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
                 {

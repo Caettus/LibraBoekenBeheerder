@@ -19,6 +19,7 @@ namespace LibraBoekenBeheerder.Controllers
         private readonly BooksDAL _booksDAL;
         private readonly CollectionBooksDAL _collectionBooksDAL;
         private readonly Books _booksClass;
+        private readonly IConfiguration _configuration;
 
         public BooksController(IConfiguration configuration)
         {
@@ -26,6 +27,7 @@ namespace LibraBoekenBeheerder.Controllers
             _booksDAL = new BooksDAL(configuration);
             _collectionBooksDAL = new CollectionBooksDAL(configuration);
             _booksClass = new Books();
+            _configuration = configuration;
         }
 
         BooksMapper _booksMapper = new BooksMapper();
@@ -56,7 +58,7 @@ namespace LibraBoekenBeheerder.Controllers
                 {
                     var dto = _booksMapper.toDTO(booksModel);
                     
-                    if (_booksClass.CreateBook(dto, selectedCollectionId))
+                    if (_booksClass.CreateBook(dto, selectedCollectionId, _configuration))
                     {
                         ViewBag.Message = "Nu de database checken of het ook waar is";
                         ModelState.Clear();

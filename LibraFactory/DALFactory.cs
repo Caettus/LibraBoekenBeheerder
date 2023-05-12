@@ -8,26 +8,26 @@ namespace LibraFactory
 
     public static class DALFactory
     {
-        public static IBooks GetCreateBook()
+        public static IBooks GetCreateBook(IConfiguration configuration)
         {
-            return new BooksDAL();
+            return new BooksDAL(configuration);
         }
-        public static IBooks GetLastInsertedBookId()
+        public static IBooks GetLastInsertedBookId(IConfiguration configuration)
         {
-            return new BooksDAL();
+            return new BooksDAL(configuration);
         }
-        public static IBooks GetAllBooks()
+        public static IBooks GetAllBooks(IConfiguration configuration)
         {
-            return new BooksDAL();
+            return new BooksDAL(configuration);
         }
-        public static IBooks GetABook()
+        public static IBooks GetABook(IConfiguration configuration)
         {
-            return new BooksDAL();
+            return new BooksDAL(configuration);
         }
         
-        public static ICollectionBooks GetLinkBookToCollection()
+        public static ICollectionBooks GetLinkBookToCollection(IConfiguration configuration)
         {
-            return new CollectionBooksDAL();
+            return new CollectionBooksDAL(configuration);
         }
     }
 }
