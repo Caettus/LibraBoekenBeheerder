@@ -30,8 +30,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LibraDALInterface\LibraDALInterface.csproj" />
       <ProjectReference Include="..\LibraDTO\LibraDTO.csproj" />
+      <ProjectReference Include="..\LibraInterface\LibraInterface.csproj" />
     </ItemGroup>
 
 </Project>

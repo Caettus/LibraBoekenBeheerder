@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LibraDB\LibraDB.csproj" />
+    <ProjectReference Include="..\LibraInterface\LibraInterface.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -2,16 +2,22 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Intrinsics.Arm;
 using Microsoft.Extensions.Configuration;
+using LibraInterface;
 
 namespace LibraDB;
 
-public class BooksDAL
+public class BooksDAL : IBooks
 {
     private readonly IConfiguration _configuration;
 
     public BooksDAL(IConfiguration configuration)
     {
         _configuration = configuration;
+    }
+
+    public BooksDAL()
+    {
+        
     }
     private SqlConnection con;
 

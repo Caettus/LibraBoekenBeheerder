@@ -1,10 +1,12 @@
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.Intrinsics.Arm;
 using Microsoft.Extensions.Configuration;
+using LibraInterface;
 
 namespace LibraDB;
 
-public class CollectionBooksDAL
+public class CollectionBooksDAL : ICollectionBooks
 {
     #region configuratie en shit
     private readonly IConfiguration _configuration;

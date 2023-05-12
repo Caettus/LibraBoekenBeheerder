@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LibraBoekenBeheerder\LibraBoekenBeheerder.csproj" />
-      <ProjectReference Include="..\LibraDB\LibraDB.csproj" />
+      <ProjectReference Include="..\LibraFactory\LibraFactory.csproj" />
     </ItemGroup>
 
 </Project>

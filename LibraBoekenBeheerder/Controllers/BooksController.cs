@@ -14,15 +14,16 @@ namespace LibraBoekenBeheerder.Controllers
     public class BooksController : Controller
     {
         
+        private readonly CollectionsDAL _collectionsDAL;
         private readonly BooksDAL _booksDAL;
         private readonly CollectionBooksDAL _collectionBooksDAL;
-        private readonly CollectionsDAL _collectionsDAL;
+        private readonly Books _booksClass;
 
         public BooksController(IConfiguration configuration)
         {
+            _collectionsDAL = new CollectionsDAL(configuration);
             _booksDAL = new BooksDAL(configuration);
             _collectionBooksDAL = new CollectionBooksDAL(configuration);
-            _collectionsDAL = new CollectionsDAL(configuration);    
         }
 
         BooksMapper _booksMapper = new BooksMapper();
@@ -43,33 +44,18 @@ namespace LibraBoekenBeheerder.Controllers
         
 
         [HttpPost]
-        public ActionResult Create(string Title, string Author, string ISBNNumber, int Pages, int PagesRead, string Summary, int SelectedCollectionId)
+        public ActionResult Create(BooksModel booksModel, int selectedCollectionId)
         {
-            BooksModel booksModel = new BooksModel();
-            {
-                booksModel.Title = Title;
-                booksModel.Author = Author;
-                booksModel.ISBNNumber = ISBNNumber;
-                booksModel.Pages = Pages;
-                booksModel.PagesRead = PagesRead;
-                booksModel.Summary = Summary;
-            }
             try
             {
                 if (ModelState.IsValid)
                 {
                     var dto = _booksMapper.toDTO(booksModel);
                     
-                    if (_booksDAL.CreateBook(dto))
+                    if (_booksClass.CreateBook(dto, selectedCollectionId))
                     {
-                        int newBookId = _booksDAL.GetLastInsertedBookId();
-                        CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
-                        if (_collectionBooksDAL.LinkBookToCollection(SelectedCollectionId, newBookId, collectionBooksDTO))
-                        {
-                            ViewBag.Message = "Book has been added successfully and linked to the collection.";
-                            ModelState.Clear();
-                        }
-                        else { ViewBag.Message = "Book Could not be created"; }
+                        ViewBag.Message = "Nu de database checken of het ook waar is";
+                        ModelState.Clear();
                     }
                     else
                     {
