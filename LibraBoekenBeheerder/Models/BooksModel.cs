@@ -23,6 +23,4 @@ public class BooksModel
 
     public string? Summary { get; set; }
     public int? SelectedCollectionId { get; set; }
-
-    public ICollection<CollectionBooksModel> CollectionsBooksIsAPartOf { get; set; } = new HashSet<CollectionBooksModel>();
 }

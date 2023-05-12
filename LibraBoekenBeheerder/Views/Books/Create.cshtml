@@ -1,5 +1,6 @@
 @model LibraBoekenBeheerder.Models.BooksModel
 
+
 @using (Html.BeginForm()) 
 {
 
@@ -18,7 +19,9 @@
                    <input type="number" asp-for="PagesRead" placeholder="Pages already read"/>
                    <input type="text" asp-for="Summary" placeholder="Short summary of the Book"/>
                
+
                    <select asp-for="SelectedCollectionId" asp-items="ViewBag.collectionDropDownList" style="width: 150px;"></select>
+
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Create" class="btn btn-default" />
@@ -29,6 +32,13 @@
             </div>
         
     </form>
+    var errors = ViewData.ModelState.Values.SelectMany(v => v.Errors);
+    foreach (var error in errors)
+    {
+        ViewBag.Message = $"{error.ErrorMessage}";
+
+    }
+
     
 }
  

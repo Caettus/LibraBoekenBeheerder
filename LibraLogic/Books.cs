@@ -27,8 +27,6 @@ public class Books
         try
         {
             IBooks createBook = DALFactory.GetCreateBook();
-
-
             if (createBook.CreateBook(booksDto))
             {
                 IBooks lastInsertedBookId = DALFactory.GetLastInsertedBookId();

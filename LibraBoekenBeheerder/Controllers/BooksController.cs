@@ -8,6 +8,7 @@ using Microsoft.Data.SqlClient;
 using LibraDB;
 using LibraLogic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraBoekenBeheerder.Controllers
 {
@@ -24,10 +25,12 @@ namespace LibraBoekenBeheerder.Controllers
             _collectionsDAL = new CollectionsDAL(configuration);
             _booksDAL = new BooksDAL(configuration);
             _collectionBooksDAL = new CollectionBooksDAL(configuration);
+            _booksClass = new Books();
         }
 
         BooksMapper _booksMapper = new BooksMapper();
         // GET: Student/Create
+      
         public ActionResult Create()
         {
             //add collections to dropdown list
@@ -35,7 +38,8 @@ namespace LibraBoekenBeheerder.Controllers
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {
-                Text = cddl.Name.ToString()
+                Text = cddl.Name.ToString(),
+                Value = cddl.CollectionsID.ToString()
             }).ToList();
 
             ViewBag.collectionDropDownList = items;
@@ -60,6 +64,14 @@ namespace LibraBoekenBeheerder.Controllers
                     else
                     {
                         ViewBag.Message = "Error occurred while creating the book";
+                    }
+                }
+                else
+                {
+                    var errors = ModelState.Values.SelectMany(v => v.Errors);
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine($"{error.ErrorMessage}");
                     }
                 }
             }
