@@ -21,7 +21,7 @@ public class Books
 
     public string? Summary { get; private set; }
 
-    
+
 
     public bool CreateBook(BooksDTO booksDto, int selectedCollectionId, IConfiguration configuration)
     {
@@ -33,9 +33,11 @@ public class Books
                 IBooks lastInsertedBookId = DALFactory.GetLastInsertedBookId(configuration);
                 int bookId = lastInsertedBookId.GetLastInsertedBookId();
 
-
                 ICollectionBooks collectionBooksLink = DALFactory.GetLinkBookToCollection(configuration);
                 CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
+                collectionBooksDTO.CollectionID = selectedCollectionId; // Set the CollectionID
+                collectionBooksDTO.BookId = bookId; // Set the BookId
+
                 if (collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
                 {
                     return true;
@@ -44,10 +46,11 @@ public class Books
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Oopsie woopsie! het is stukkie wukkie OwO: {ex.Message}");
+            Console.WriteLine($"Oopsie woopsie! Something went wrong: {ex.Message}");
             return false;
         }
 
         return false;
     }
+
 }
