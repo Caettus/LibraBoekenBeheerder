@@ -8,55 +8,44 @@
 
 <h4>BooksModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    <form asp-controller="BooksController" asp-action="Edit">
+        <div class="form-horizontal">
+            <h5>Update a Book</h5>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="text" asp-for="Title" placeholder="Title of Book" />
+            <input type="text" asp-for="Author" placeholder="Author of Book" />
+            <input type="text" asp-for="ISBNNumber" placeholder="ISBNNumber of Book" />
+            <input type="number" asp-for="Pages" placeholder="Pages of Book" />
+            <input type="number" asp-for="PagesRead" placeholder="Pages already read" />
+            <input type="text" asp-for="Summary" placeholder="Short summary of the Book" />
+
+
+            <select asp-for="SelectedCollectionId" asp-items="ViewBag.collectionDropDownList" style="width: 150px;"></select>
+
             <div class="form-group">
-                <label asp-for="BookId" class="control-label"></label>
-                <input asp-for="BookId" class="form-control" />
-                <span asp-validation-for="BookId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Author" class="control-label"></label>
-                <input asp-for="Author" class="form-control" />
-                <span asp-validation-for="Author" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ISBNNumber" class="control-label"></label>
-                <input asp-for="ISBNNumber" class="form-control" />
-                <span asp-validation-for="ISBNNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Pages" class="control-label"></label>
-                <input asp-for="Pages" class="form-control" />
-                <span asp-validation-for="Pages" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PagesRead" class="control-label"></label>
-                <input asp-for="PagesRead" class="form-control" />
-                <span asp-validation-for="PagesRead" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Summary" class="control-label"></label>
-                <input asp-for="Summary" class="form-control" />
-                <span asp-validation-for="Summary" class="text-danger"></span>
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
             </div>
 
-        <dt>
-            <select asp-items="ViewBag.collectionDropDownList" style="width: 150px;"></select>
-        </dt>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+            <h3>@ViewBag.Message</h3>
+        </div>
+
+    </form>
+    var errors = ViewData.ModelState.Values.SelectMany(v => v.Errors);
+    foreach (var error in errors)
+    {
+        ViewBag.Message = $"{error.ErrorMessage}";
+
+    }
+}
 
 <div>
     <a asp-action="Index">Back to List</a>

@@ -17,7 +17,7 @@ public class BooksDAL : IBooks
 
     public BooksDAL()
     {
-        
+
     }
     private SqlConnection con;
 
@@ -106,6 +106,27 @@ public class BooksDAL : IBooks
             return true;
         else
             return false;
+    }
+
+    public bool EditBook(BooksDTO booksDTO)
+    {
+        connection();
+        SqlCommand cmd = new SqlCommand("UPDATE dbo.Books SET Title = @Title, Author = @Author, ISBNNumber = @ISBNNumber, Summary = @Summary, Pages = @Pages, PagesRead = @PagesRead WHERE BookId = @BookId;", con);
+        cmd.CommandType = CommandType.Text;
+
+        cmd.Parameters.AddWithValue("@BookId", booksDTO.BookId);
+        cmd.Parameters.AddWithValue("@Title", booksDTO.Title);
+        cmd.Parameters.AddWithValue("@Author", booksDTO.Author);
+        cmd.Parameters.AddWithValue("@ISBNNumber", booksDTO.ISBNNumber);
+        cmd.Parameters.AddWithValue("@Summary", booksDTO.Summary);
+        cmd.Parameters.AddWithValue("@Pages", booksDTO.Pages);
+        cmd.Parameters.AddWithValue("@PagesRead", booksDTO.PagesRead);
+
+        con.Open();
+        var i = cmd.ExecuteNonQuery();
+        con.Close();
+
+        return i >= 1;
     }
 
     public int GetLastInsertedBookId()

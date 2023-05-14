@@ -2,6 +2,7 @@ using LibraDB;
 using LibraInterface;
 using LibraFactory;
 using Microsoft.Extensions.Configuration;
+using System.Net;
 
 namespace LibraLogic;
 
@@ -27,16 +28,16 @@ public class Books
     {
         try
         {
-            IBooks createBook = DALFactory.GetCreateBook(configuration);
+            IBooks createBook = DALFactory.GetBooksDAL(configuration);
             if (createBook.CreateBook(booksDto))
             {
-                IBooks lastInsertedBookId = DALFactory.GetLastInsertedBookId(configuration);
+                IBooks lastInsertedBookId = DALFactory.GetBooksDAL(configuration);
                 int bookId = lastInsertedBookId.GetLastInsertedBookId();
 
                 ICollectionBooks collectionBooksLink = DALFactory.GetLinkBookToCollection(configuration);
                 CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
-                collectionBooksDTO.CollectionID = selectedCollectionId; // Set the CollectionID
-                collectionBooksDTO.BookId = bookId; // Set the BookId
+                collectionBooksDTO.CollectionID = selectedCollectionId;
+                collectionBooksDTO.BookId = bookId;
 
                 if (collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
                 {
@@ -51,6 +52,47 @@ public class Books
         }
 
         return false;
+    }
+
+    public bool EditBook(BooksDTO booksDTO, int selectedCollectionId, int bookId, IConfiguration configuration)
+    {
+        try
+        {
+            IBooks editBook = DALFactory.GetBooksDAL(configuration);
+
+            ICollectionBooks collectionBooksLink = DALFactory.GetLinkBookToCollection(configuration);
+            CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
+            collectionBooksDTO.CollectionID = selectedCollectionId;
+            collectionBooksDTO.BookId = bookId;
+
+            if (editBook.EditBook(booksDTO) && collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
+            {
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Shits fucked mate: {e.Message}");
+            return false;
+        }
+        return false;
+    }
+
+    public bool GetABook(int id, IConfiguration configuration)
+    {
+        try
+        {
+            IBooks getABook = DALFactory.GetBooksDAL(configuration);
+            if (getABook.GetABook(id))
+            {
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Boek kon niet worden opgehaald :) : {e.Message}");
+            return false;
+        }
     }
 
 }

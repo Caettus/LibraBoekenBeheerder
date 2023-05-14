@@ -47,6 +47,19 @@ namespace LibraBoekenBeheerder.Controllers
             ViewBag.collectionDropDownList = items;
             return View();
         }
+
+        public ActionResult Edit(int id)
+        {
+            var collectionDropDownList = _collectionBooksDAL.GetCollectionsNotContainingBook(id);
+
+            List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+            {
+                Text = cddl.Name.ToString()
+            }).ToList();
+
+            ViewBag.collectionDropDownList = items;
+            return View();
+        }
         
 
         [HttpPost]
@@ -60,7 +73,7 @@ namespace LibraBoekenBeheerder.Controllers
                     
                     if (_booksClass.CreateBook(dto, selectedCollectionId, _configuration))
                     {
-                        ViewBag.Message = "Nu de database checken of het ook waar is";
+                        ViewBag.Message = "Book succesfully created!";
                         ModelState.Clear();
                     }
                     else
@@ -137,29 +150,32 @@ namespace LibraBoekenBeheerder.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit(int id = 0) 
+        public ActionResult Edit(BooksModel booksModel, int selectedCollectionId, int BookId = 0)
         {
             try
             {
-                var bookDto = _booksDAL.GetABook(id);
-                if (bookDto != null)
+                var bookDto = _booksDAL.GetABook(BookId);
+                if (bookDto != null && ModelState.IsValid)
                 {
-                    var booksMapper = new BooksMapper();
-                    var booksModel = booksMapper.toModel(bookDto);
-                    var collectionDropDownList = _collectionBooksDAL.GetCollectionsNotContainingBook(id);
+                    var dto = _booksMapper.toDTO(booksModel);
 
-                    List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+                    if (_booksClass.EditBook(dto, selectedCollectionId, BookId, _configuration))
                     {
-                        Text = cddl.Name.ToString()
-                    }).ToList();
-
-                    ViewBag.collectionDropDownList = items;
-
-                    return View(booksModel);
+                        ViewBag.Message = "Nu de database checken of het ook waar is";
+                        ModelState.Clear();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Error occurred while creating the book";
+                    }
                 }
                 else
                 {
-                    return Content("Book could not be found");
+                    var errors = ModelState.Values.SelectMany(v => v.Errors);
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine($"{error.ErrorMessage}");
+                    }
                 }
             }
             catch (Exception e)
@@ -167,6 +183,9 @@ namespace LibraBoekenBeheerder.Controllers
                 ViewBag.Message = $"Exception: {e}";
                 throw;
             }
+
+            return View(booksModel);
         }
+
     }
 }
