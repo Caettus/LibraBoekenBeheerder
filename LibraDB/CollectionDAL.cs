@@ -54,6 +54,26 @@ public class CollectionDAL : ICollection
         return mycollectionsList;
     }
 
+    public CollectionDTO GetACollection(int id)
+    {
+        connection();
+        SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.Collection WHERE CollectionID = @id", con);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.CommandType = CommandType.Text;
+        con.Open();
+
+        SqlDataReader rdr = cmd.ExecuteReader();
+        CollectionDTO collection = null;
+        if (rdr.Read())
+        {
+            collection = new CollectionDTO();
+            collection.CollectionsID = Convert.ToInt32(rdr["CollectionID"]);
+            collection.Name = rdr["Name"].ToString();
+        }
+        con.Close();
+        return collection;
+    }
+
     public bool CreateCollection(CollectionDTO collectionsDto)
     {
         connection();

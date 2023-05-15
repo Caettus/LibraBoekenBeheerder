@@ -11,6 +11,7 @@ namespace LibraInterface
     {
         bool LinkBookToCollection(int CollectionID, int BookID, CollectionBooksDTO collectionBooksDTO);
         List<CollectionDTO> GetAllCollections();
+        CollectionDTO GetACollection(int id);
         bool CreateCollection(CollectionDTO collectionsDto);
         List<CollectionDTO> GetCollectionsNotContainingBook(int id);
         List<CollectionDTO> GetCollectionsContainingBook(int id);

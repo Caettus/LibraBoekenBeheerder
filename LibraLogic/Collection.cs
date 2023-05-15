@@ -39,6 +39,25 @@ namespace LibraLogic
             return new List<Collection>();
         }
 
+        public Collection ReturnACollection(IConfiguration configuration, int id) 
+        {
+            try
+            {
+                ICollection getACollection = DALFactory.GetCollectionDAL(configuration);
+                CollectionDTO dto = getACollection.GetACollection(id);
+
+                if (dto != null)
+                {
+                    Collection collection = _collectionMapper.toClass(dto);
+                    return collection;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Boek kon niet worden opgehaald :) : {e.Message}");
+            }
+            return null;
+        }
 
 
         public List<Collection> ReturnCollectionsNotContaintingBook(int id, IConfiguration configuration)

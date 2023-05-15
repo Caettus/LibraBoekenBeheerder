@@ -39,5 +39,10 @@
             <td>@collection.CollectionID</td>
             <td>@collection.Name</td>
         </tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=collection.CollectionID})
+            @Html.ActionLink("Details", "Details", new { id=collection.CollectionID})
+            @Html.ActionLink("Delete", "Delete", new { id=collection.CollectionID})
+        </td>
     }
 </table>
