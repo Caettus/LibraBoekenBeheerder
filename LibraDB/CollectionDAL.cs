@@ -4,7 +4,7 @@ using System.Reflection.Emit;
 using LibraInterface;
 using Microsoft.Extensions.Configuration;
 
-namespace LibraDB;
+namespace LibraDTO;
 
 public class CollectionDAL : ICollection
 {

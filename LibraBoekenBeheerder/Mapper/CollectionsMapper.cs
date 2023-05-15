@@ -1,5 +1,5 @@
 using LibraBoekenBeheerder.Models;
-using LibraDB;
+using LibraDTO;
 
 namespace LibraLogic;
 
@@ -14,12 +14,12 @@ public class CollectionsMapper
         };
     }
 
-    public CollectionsModel toModel(Collection collection)
+    public CollectionsModel toModel(Collection collectionClass)
     {
         return new CollectionsModel()
         {
-            CollectionID = collection.CollectionsID,
-            Name = collection.Name
+            CollectionID = collectionClass.CollectionsID,
+            Name = collectionClass.Name
         };
     }
 }

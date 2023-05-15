@@ -1,4 +1,4 @@
-namespace LibraDB;
+namespace LibraDTO;
 
 public class CollectionBooksDTO
 {

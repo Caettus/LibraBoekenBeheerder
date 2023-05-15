@@ -1,4 +1,4 @@
-using LibraDB;
+using LibraDTO;
 using LibraInterface;
 using LibraFactory;
 using Microsoft.Extensions.Configuration;
@@ -84,20 +84,42 @@ public class Books
         return false;
     }
 
-    public bool GetABook(int id, IConfiguration configuration)
+    public Books GetABook(int id, IConfiguration configuration)
     {
         try
         {
             IBooks getABook = DALFactory.GetBooksDAL(configuration);
-            if (getABook.GetABook(id))
+            BooksDTO dto = getABook.GetABook(id);
+
+            if (dto != null)
             {
-                return true;
+                Books book = _booksMapper.toClass(dto);
+                return book;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine($"Boek kon niet worden opgehaald :) : {e.Message}");
-            return false;
         }
+        return null;
+    }
+
+    public List<Books> ReturnAllBooks(IConfiguration configuration) 
+    {
+        try
+        {
+            IBooks getAllBooks = DALFactory.GetBooksDAL(configuration);
+
+            List<BooksDTO> returnBooksDtoList = getAllBooks.GetAllBooks();
+
+            List<Books> returnBooksList = returnBooksDtoList.Select(_booksMapper.toClass).ToList();
+
+            return returnBooksList;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"ReturnAllBooks werkt niet: {e.Message}");
+        }
+        return new List<Books> { };
     }
 }

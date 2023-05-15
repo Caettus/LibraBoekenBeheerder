@@ -5,31 +5,34 @@ using LibraBoekenBeheerder.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
+using LibraDTO;
 using LibraLogic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly Books _booksClass;
         private readonly Collection _collectionClass;
+        private readonly Books _booksClass;
         private readonly IConfiguration _configuration;
+        private readonly BooksMapper _booksMapper;
 
-        public BooksController(IConfiguration configuration)
+        public BooksController(IConfiguration configuration, Collection collectionClass, Books booksClass, BooksMapper booksMapper)
         {
-            _booksClass = new Books();
-            _collectionClass = new Collection();
             _configuration = configuration;
+            _collectionClass = collectionClass;
+            _booksClass = booksClass;
+            _booksMapper = booksMapper;
         }
 
-        BooksMapper _booksMapper = new BooksMapper();
-      
-        public ActionResult Create(IConfiguration configuration)
+    public ActionResult Create()
         {
+            IConfiguration config = _configuration;
             //add collections to dropdown list
-            var collectionDropDownList = _collectionClass.ReturnAllCollections(configuration);
+            var collectionDropDownList = _collectionClass.ReturnAllCollections(config);
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {
@@ -41,19 +44,9 @@ namespace LibraBoekenBeheerder.Controllers
             return View();
         }
 
-        public ActionResult Edit(int id, IConfiguration configuration)
-        {
-            var collectionDropDownList = _collectionClass.ReturnCollectionsNotContaintingBook(id, configuration);
 
-            List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
-            {
-                Text = cddl.Name.ToString()
-            }).ToList();
 
-            ViewBag.collectionDropDownList = items;
-            return View();
-        }
-        
+
 
         [HttpPost]
         public ActionResult Create(BooksModel booksModel, int selectedCollectionId)
@@ -62,9 +55,9 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var booksClass = _booksMapper.toClass(booksModel);
+                    var dto = _booksMapper.toClass(booksModel);
                     
-                    if (_booksClass.CreateBook(booksClass, selectedCollectionId, _configuration))
+                    if (_booksClass.CreateBook(dto, selectedCollectionId, _configuration))
                     {
                         ViewBag.Message = "Book succesfully created!";
                         ModelState.Clear();
@@ -92,26 +85,26 @@ namespace LibraBoekenBeheerder.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int id)
         {
             try
             {
-                var bookDto = _booksClass.GetABook(id);
+                IConfiguration config = _configuration;
+                var collectionDropDownList = _collectionClass.ReturnCollectionsContaintingBook(id, config);
+
+                List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+                {
+                    Text = cddl.Name.ToString()
+                }).ToList();
+
+                ViewBag.collectionDropDownList = items;
+
+                var bookDto = _booksClass.GetABook(id, config);
 
                 if (bookDto != null)
                 {
                     var booksMapper = new BooksMapper();
                     var bookModel = booksMapper.toModel(bookDto);
-                    //Moet dit hier?
-                    var collectionDropDownList = _collectionBooksDAL.GetCollectionsContainingBook(id);
-            
-                    List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
-                    {
-                        Text = cddl.Name.ToString()
-                    }).ToList();
-
-                    ViewBag.collectionDropDownList = items;
-                    //Vast wel
                     return View(bookModel);
                 }
                 else
@@ -127,39 +120,62 @@ namespace LibraBoekenBeheerder.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult Index(BooksModel booksModel)
+        public ActionResult Index()
         {
-            var dto = _booksMapper.toDTO(booksModel);
-            var dtoList = _booksClass.GetAllBooks();
-            List<BooksModel> booksList = new List<BooksModel>();
-            
-            foreach (var dtoItem in dtoList)
+            var configuration = HttpContext.RequestServices.GetService<IConfiguration>();
+            var returnBooksList = _booksClass.ReturnAllBooks(configuration);
+
+            var booksList = new List<BooksModel>();
+            foreach (var item in returnBooksList)
             {
-                var modelItem = _booksMapper.toModel(dtoItem);
-                booksList.Add(modelItem);
+                var booksItem = _booksMapper.toModel(item);
+                booksList.Add(booksItem);
             }
+
             return View(booksList);
         }
 
+
+
+
         [HttpPut]
-        public ActionResult Edit(BooksModel booksModel, int selectedCollectionId, int BookId = 0)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(string _method, BooksModel booksModel, int selectedCollectionId, int bookId = 0)
         {
             try
             {
-                var bookDto = _booksClass.GetABook(BookId);
+                IConfiguration configuration = _configuration;
+                var collectionDropDownList = _collectionClass.ReturnCollectionsNotContaintingBook(bookId, configuration);
+
+                List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+                {
+                    Text = cddl.Name.ToString()
+                }).ToList();
+
+                ViewBag.collectionDropDownList = items;
+
+                var bookDto = _booksClass.GetABook(bookId, configuration);
                 if (bookDto != null && ModelState.IsValid)
                 {
-                    var dto = _booksMapper.toDTO(booksModel);
+                    var mapper = new BooksMapper();
+                    var bookClass = mapper.toClass(booksModel);
 
-                    if (_booksClass.EditBook(dto, selectedCollectionId, BookId, _configuration))
+                    //Dit om ervoor te zorgen dat die het als een PUT request ziet in plaats van een POST
+                    if (_method == "PUT")
                     {
-                        ViewBag.Message = "Nu de database checken of het ook waar is";
-                        ModelState.Clear();
+                        if (_booksClass.EditBook(bookClass, selectedCollectionId, bookId, _configuration))
+                        {
+                            ViewBag.Message = "Now check the database to see if it's true";
+                            ModelState.Clear();
+                        }
+                        else
+                        {
+                            ViewBag.Message = "An error occurred while updating the book";
+                        }
                     }
                     else
                     {
-                        ViewBag.Message = "Error occurred while creating the book";
+                        ViewBag.Message = "Invalid request method";
                     }
                 }
                 else
@@ -174,11 +190,9 @@ namespace LibraBoekenBeheerder.Controllers
             catch (Exception e)
             {
                 ViewBag.Message = $"Exception: {e}";
-                throw;
             }
 
             return View(booksModel);
         }
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿using LibraBoekenBeheerder.Models;
-using LibraDB;
+using LibraDTO;
 
 namespace LibraLogic;
 

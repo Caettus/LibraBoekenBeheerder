@@ -4,11 +4,10 @@ using System.Runtime.Intrinsics.Arm;
 using Microsoft.Extensions.Configuration;
 using LibraInterface;
 
-namespace LibraDB;
+namespace LibraDTO;
 
 public class BooksDAL : IBooks
 {
-    #region configuratie
     private readonly IConfiguration _configuration;
 
     public BooksDAL(IConfiguration configuration)
@@ -27,8 +26,6 @@ public class BooksDAL : IBooks
         string connstring = _configuration.GetConnectionString("MyConnectionString");
         con = new SqlConnection(connstring);
     }
-
-    #endregion
 
 
     public List<BooksDTO> GetAllBooks()

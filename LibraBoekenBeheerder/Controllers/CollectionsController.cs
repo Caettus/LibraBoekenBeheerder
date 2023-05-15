@@ -5,33 +5,32 @@ using LibraBoekenBeheerder.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
-using LibraDB;
+using LibraDTO;
 using LibraLogic;
 
 namespace LibraBoekenBeheerder.Controllers
 {
     public class CollectionsController : Controller
     {
-        private Collection collectionClass = new Collection();
+        private readonly Collection collectionClass;
         private CollectionsMapper _collectionsMapper = new CollectionsMapper();
 
-        public CollectionsController(IConfiguration _configuration)
+        public CollectionsController()
         {
-            collectionClass = new Collection();
         }
 
 
         [HttpGet]
         public ActionResult Index(CollectionsModel collectionsModel, IConfiguration configuration)
         {
-            var toClass = _collectionsMapper.toClass(collectionsModel);
+            var dto = _collectionsMapper.toClass(collectionsModel);
 
             List<CollectionsModel> collectionsModels = new List<CollectionsModel>();
 
-            var collectionList = collectionClass.ReturnAllCollections(configuration);
-            foreach (var Item in collectionList)
+            var dtoList = collectionClass.ReturnAllCollections(configuration);
+            foreach (var dtoItem in dtoList)
             {
-                var modelItem = _collectionsMapper.toModel(Item);
+                var modelItem = _collectionsMapper.toModel(dtoItem);
                 collectionsModels.Add(modelItem);
             }
             return View(collectionsModels);
@@ -49,8 +48,8 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var toClass = _collectionsMapper.toClass(collectionsModel);
-                    if (collectionClass.CreateCollection(toClass, configuration))
+                    var _dto = _collectionsMapper.toClass(collectionsModel);
+                    if (collectionClass.CreateCollection(_dto, configuration))
                     {
                         ViewBag.Message = "Collection has been added succesfully";
                         ModelState.Clear();
@@ -63,7 +62,7 @@ namespace LibraBoekenBeheerder.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Message = "Error 420: Error occured while creating the collection";
+                ViewBag.Message = $"Error 420: Error occured while creating the collection {e.Message}";
                 throw;
             }
             return View(collectionsModel);
