@@ -8,6 +8,7 @@ namespace LibraDB;
 
 public class BooksDAL : IBooks
 {
+    #region configuratie
     private readonly IConfiguration _configuration;
 
     public BooksDAL(IConfiguration configuration)
@@ -26,6 +27,8 @@ public class BooksDAL : IBooks
         string connstring = _configuration.GetConnectionString("MyConnectionString");
         con = new SqlConnection(connstring);
     }
+
+    #endregion
 
 
     public List<BooksDTO> GetAllBooks()

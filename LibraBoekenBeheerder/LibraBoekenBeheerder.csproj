@@ -15,7 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LibraDB\LibraDB.csproj" />
       <ProjectReference Include="..\LibraLogic\LibraLogic.csproj" />
     </ItemGroup>
 

@@ -5,7 +5,6 @@ using LibraBoekenBeheerder.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
-using LibraDB;
 using LibraLogic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -14,29 +13,23 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        
-        private readonly CollectionsDAL _collectionsDAL;
-        private readonly BooksDAL _booksDAL;
-        private readonly CollectionBooksDAL _collectionBooksDAL;
         private readonly Books _booksClass;
+        private readonly Collection _collectionClass;
         private readonly IConfiguration _configuration;
 
         public BooksController(IConfiguration configuration)
         {
-            _collectionsDAL = new CollectionsDAL(configuration);
-            _booksDAL = new BooksDAL(configuration);
-            _collectionBooksDAL = new CollectionBooksDAL(configuration);
             _booksClass = new Books();
+            _collectionClass = new Collection();
             _configuration = configuration;
         }
 
         BooksMapper _booksMapper = new BooksMapper();
-        // GET: Student/Create
       
-        public ActionResult Create()
+        public ActionResult Create(IConfiguration configuration)
         {
             //add collections to dropdown list
-            var collectionDropDownList = _collectionsDAL.GetAllCollections();
+            var collectionDropDownList = _collectionClass.ReturnAllCollections(configuration);
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {
@@ -48,9 +41,9 @@ namespace LibraBoekenBeheerder.Controllers
             return View();
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, IConfiguration configuration)
         {
-            var collectionDropDownList = _collectionBooksDAL.GetCollectionsNotContainingBook(id);
+            var collectionDropDownList = _collectionClass.ReturnCollectionsNotContaintingBook(id, configuration);
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {
@@ -69,9 +62,9 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var dto = _booksMapper.toDTO(booksModel);
+                    var booksClass = _booksMapper.toClass(booksModel);
                     
-                    if (_booksClass.CreateBook(dto, selectedCollectionId, _configuration))
+                    if (_booksClass.CreateBook(booksClass, selectedCollectionId, _configuration))
                     {
                         ViewBag.Message = "Book succesfully created!";
                         ModelState.Clear();
@@ -103,7 +96,7 @@ namespace LibraBoekenBeheerder.Controllers
         {
             try
             {
-                var bookDto = _booksDAL.GetABook(id);
+                var bookDto = _booksClass.GetABook(id);
 
                 if (bookDto != null)
                 {
@@ -138,7 +131,7 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Index(BooksModel booksModel)
         {
             var dto = _booksMapper.toDTO(booksModel);
-            var dtoList = _booksDAL.GetAllBooks();
+            var dtoList = _booksClass.GetAllBooks();
             List<BooksModel> booksList = new List<BooksModel>();
             
             foreach (var dtoItem in dtoList)
@@ -154,7 +147,7 @@ namespace LibraBoekenBeheerder.Controllers
         {
             try
             {
-                var bookDto = _booksDAL.GetABook(BookId);
+                var bookDto = _booksClass.GetABook(BookId);
                 if (bookDto != null && ModelState.IsValid)
                 {
                     var dto = _booksMapper.toDTO(booksModel);

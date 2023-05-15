@@ -5,9 +5,9 @@ namespace LibraLogic;
 
 public class BooksMapper
 {
-    public BooksDTO toDTO(BooksModel booksModel)
+    public Books toClass(BooksModel booksModel)
     {
-        return new BooksDTO()
+        return new Books()
         {
             BookId = booksModel.BookId,
             Title = booksModel.Title,
@@ -18,17 +18,17 @@ public class BooksMapper
             Summary = booksModel.Summary
         };
     }
-    public BooksModel toModel(BooksDTO booksDto)
+    public BooksModel toModel(Books booksClass)
     {
         return new BooksModel()
         {
-            BookId = booksDto.BookId,
-            Title = booksDto.Title,
-            Author = booksDto.Author,
-            ISBNNumber = booksDto.ISBNNumber,
-            Pages = booksDto.Pages,
-            PagesRead = booksDto.PagesRead,
-            Summary = booksDto.Summary
+            BookId = booksClass.BookId,
+            Title = booksClass.Title,
+            Author = booksClass.Author,
+            ISBNNumber = booksClass.ISBNNumber,
+            Pages = booksClass.Pages,
+            PagesRead = booksClass.PagesRead,
+            Summary = booksClass.Summary
         };
     }
 }

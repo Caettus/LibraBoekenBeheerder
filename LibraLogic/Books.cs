@@ -3,38 +3,42 @@ using LibraInterface;
 using LibraFactory;
 using Microsoft.Extensions.Configuration;
 using System.Net;
+using LibraLogic.Mappers;
 
 namespace LibraLogic;
 
 public class Books
 {
-    public int BookId { get; private set; }
+    public int BookId { get; set; }
 
-    public string Title { get; private set; }
+    public string Title { get; set; }
 
-    public string Author { get; private set; }
+    public string Author { get; set; }
 
-    public string ISBNNumber { get; private set; }
+    public string ISBNNumber { get; set; }
 
-    public int? Pages { get; private set; }
+    public int? Pages { get; set; }
 
-    public int? PagesRead { get; private set; }
+    public int? PagesRead { get; set; }
 
-    public string? Summary { get; private set; }
+    public string? Summary { get; set; }
 
 
+    BooksMapper _booksMapper = new BooksMapper();
 
-    public bool CreateBook(BooksDTO booksDto, int selectedCollectionId, IConfiguration configuration)
+    public bool CreateBook(Books booksClass, int selectedCollectionId, IConfiguration configuration)
     {
         try
         {
-            IBooks createBook = DALFactory.GetBooksDAL(configuration);
-            if (createBook.CreateBook(booksDto))
-            {
-                IBooks lastInsertedBookId = DALFactory.GetBooksDAL(configuration);
-                int bookId = lastInsertedBookId.GetLastInsertedBookId();
+            IBooks Book = DALFactory.GetBooksDAL(configuration);
+            var dto = _booksMapper.toDTO(booksClass);
 
-                ICollectionBooks collectionBooksLink = DALFactory.GetLinkBookToCollection(configuration);
+
+            if (Book.CreateBook(dto))
+            {
+                int bookId = Book.GetLastInsertedBookId();
+
+                ICollection collectionBooksLink = DALFactory.GetCollectionDAL(configuration);
                 CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
                 collectionBooksDTO.CollectionID = selectedCollectionId;
                 collectionBooksDTO.BookId = bookId;
@@ -54,18 +58,20 @@ public class Books
         return false;
     }
 
-    public bool EditBook(BooksDTO booksDTO, int selectedCollectionId, int bookId, IConfiguration configuration)
+    public bool EditBook(Books booksClass, int selectedCollectionId, int bookId, IConfiguration configuration)
     {
         try
         {
             IBooks editBook = DALFactory.GetBooksDAL(configuration);
 
-            ICollectionBooks collectionBooksLink = DALFactory.GetLinkBookToCollection(configuration);
+            ICollection collectionBooksLink = DALFactory.GetCollectionDAL(configuration);
             CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
             collectionBooksDTO.CollectionID = selectedCollectionId;
             collectionBooksDTO.BookId = bookId;
 
-            if (editBook.EditBook(booksDTO) && collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
+            var dto = _booksMapper.toDTO(booksClass);
+
+            if (editBook.EditBook(dto) && collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
             {
                 return true;
             }
@@ -94,5 +100,4 @@ public class Books
             return false;
         }
     }
-
 }

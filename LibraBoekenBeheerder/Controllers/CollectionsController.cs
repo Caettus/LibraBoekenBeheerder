@@ -12,26 +12,26 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class CollectionsController : Controller
     {
-        private readonly CollectionsDAL _collectionsDal;
+        private Collection collectionClass = new Collection();
         private CollectionsMapper _collectionsMapper = new CollectionsMapper();
 
         public CollectionsController(IConfiguration _configuration)
         {
-            _collectionsDal = new CollectionsDAL(_configuration);
+            collectionClass = new Collection();
         }
 
 
         [HttpGet]
-        public ActionResult Index(CollectionsModel collectionsModel)
+        public ActionResult Index(CollectionsModel collectionsModel, IConfiguration configuration)
         {
-            var dto = _collectionsMapper.toDTO(collectionsModel);
+            var toClass = _collectionsMapper.toClass(collectionsModel);
 
             List<CollectionsModel> collectionsModels = new List<CollectionsModel>();
 
-            var dtoList = _collectionsDal.GetAllCollections();
-            foreach (var dtoItem in dtoList)
+            var collectionList = collectionClass.ReturnAllCollections(configuration);
+            foreach (var Item in collectionList)
             {
-                var modelItem = _collectionsMapper.toModel(dtoItem);
+                var modelItem = _collectionsMapper.toModel(Item);
                 collectionsModels.Add(modelItem);
             }
             return View(collectionsModels);
@@ -43,14 +43,14 @@ namespace LibraBoekenBeheerder.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CollectionsModel collectionsModel)
+        public ActionResult Create(CollectionsModel collectionsModel, IConfiguration configuration)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var _dto = _collectionsMapper.toDTO(collectionsModel);
-                    if (_collectionsDal.CreateCollection(_dto))
+                    var toClass = _collectionsMapper.toClass(collectionsModel);
+                    if (collectionClass.CreateCollection(toClass, configuration))
                     {
                         ViewBag.Message = "Collection has been added succesfully";
                         ModelState.Clear();

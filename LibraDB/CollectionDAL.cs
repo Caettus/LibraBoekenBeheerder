@@ -1,26 +1,24 @@
 using System.Data;
 using System.Data.SqlClient;
-using System.Runtime.Intrinsics.Arm;
-using Microsoft.Extensions.Configuration;
+using System.Reflection.Emit;
 using LibraInterface;
+using Microsoft.Extensions.Configuration;
 
 namespace LibraDB;
 
-public class CollectionBooksDAL : ICollectionBooks
+public class CollectionDAL : ICollection
 {
-    #region configuratie en shit
-    private readonly IConfiguration _configuration;
 
-    public CollectionBooksDAL(IConfiguration configuration)
+    #region configuratie
+    private readonly IConfiguration _configuration;
+    
+    public CollectionDAL(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    public CollectionBooksDAL()
-    {
 
-    }
     private SqlConnection con;
-        
+
     private void connection()
     {
         string connstring = _configuration.GetConnectionString("MyConnectionString");
@@ -28,6 +26,50 @@ public class CollectionBooksDAL : ICollectionBooks
     }
     #endregion
 
+    public List<CollectionDTO> GetAllCollections()
+    {
+        List<CollectionDTO> mycollectionsList = new List<CollectionDTO>();
+        
+        connection();
+        SqlCommand command = new SqlCommand("SELECT * FROM dbo.Collection", con);
+
+        command.CommandType = CommandType.Text;
+        con.Open();
+
+        SqlDataReader dataReader = command.ExecuteReader();
+        while (dataReader.Read())
+        {
+            var collection = new CollectionDTO();
+
+            collection.CollectionsID = Convert.ToInt32(dataReader["CollectionID"]);
+            collection.Name = dataReader["Name"].ToString();
+            mycollectionsList.Add(collection);
+
+            if (collection != null)
+            {
+                mycollectionsList.Add(collection);
+            }
+        }
+        con.Close();
+        return mycollectionsList;
+    }
+
+    public bool CreateCollection(CollectionDTO collectionsDto)
+    {
+        connection();
+        SqlCommand command = new SqlCommand("INSERT INTO [dbo].[Collection] ([Name]) VALUES (@Name);", con);
+        command.CommandType = CommandType.Text;
+
+        command.Parameters.AddWithValue("@Name", collectionsDto.Name);
+        con.Open();
+        var i = command.ExecuteNonQuery();
+        con.Close();
+
+        if (i >= 1)
+            return true;
+        else
+            return false;
+    }
 
     public bool LinkBookToCollection(int CollectionID, int BookID, CollectionBooksDTO collectionBooksDTO)
     {
@@ -48,9 +90,9 @@ public class CollectionBooksDAL : ICollectionBooks
             return false;
     }
 
-    public List<CollectionsDTO> GetCollectionsNotContainingBook(int id)
+    public List<CollectionDTO> GetCollectionsNotContainingBook(int id)
     {
-        List<CollectionsDTO> collectionlist = new List<CollectionsDTO>();
+        List<CollectionDTO> collectionlist = new List<CollectionDTO>();
         connection();
         SqlCommand cmd = new SqlCommand(
                    "SELECT c.CollectionID, c.Name " +
@@ -63,7 +105,7 @@ public class CollectionBooksDAL : ICollectionBooks
         SqlDataReader rdr = cmd.ExecuteReader();
         while (rdr.Read())
         {
-            var collection = new CollectionsDTO();
+            var collection = new CollectionDTO();
 
             collection.CollectionsID = Convert.ToInt32(rdr["CollectionID"]);
             collection.Name = rdr["Name"].ToString();
@@ -74,9 +116,9 @@ public class CollectionBooksDAL : ICollectionBooks
         return collectionlist;
     }
 
-    public List<CollectionsDTO> GetCollectionsContainingBook(int id)
+    public List<CollectionDTO> GetCollectionsContainingBook(int id)
     {
-        List<CollectionsDTO> collectionlist = new List<CollectionsDTO>();
+        List<CollectionDTO> collectionlist = new List<CollectionDTO>();
         connection();
         SqlCommand cmd = new SqlCommand(
                    "SELECT c.CollectionID, c.Name " +
@@ -89,7 +131,7 @@ public class CollectionBooksDAL : ICollectionBooks
         SqlDataReader rdr = cmd.ExecuteReader();
         while (rdr.Read())
         {
-            var collection = new CollectionsDTO();
+            var collection = new CollectionDTO();
 
             collection.CollectionsID = Convert.ToInt32(rdr["CollectionID"]);
             collection.Name = rdr["Name"].ToString();
