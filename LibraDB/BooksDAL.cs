@@ -1,10 +1,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Intrinsics.Arm;
+using LibraDTO;
 using Microsoft.Extensions.Configuration;
 using LibraInterface;
 
-namespace LibraDTO;
+namespace LibraDBWW;
 
 public class BooksDAL : IBooks
 {

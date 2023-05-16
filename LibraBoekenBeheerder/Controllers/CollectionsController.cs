@@ -28,13 +28,15 @@ namespace LibraBoekenBeheerder.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(CollectionsModel collectionsModel, IConfiguration configuration)
+        public ActionResult Index()
         {
+            CollectionsModel collectionsModel = new CollectionsModel();
+            
             var dto = _collectionsMapper.toClass(collectionsModel);
 
             List<CollectionsModel> collectionsModels = new List<CollectionsModel>();
 
-            var dtoList = _collectionClass.ReturnAllCollections(configuration);
+            var dtoList = _collectionClass.ReturnAllCollections(_configuration);
             foreach (var dtoItem in dtoList)
             {
                 var modelItem = _collectionsMapper.toModel(dtoItem);
@@ -77,16 +79,16 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 IConfiguration config = _configuration;
                 var collectionDropDownList = _collectionClass.ReturnCollectionsContaintingBook(id, config);
-
+        
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                 {
                     Text = cddl.Name.ToString()
                 }).ToList();
-
+        
                 ViewBag.collectionDropDownList = items;
-
+        
                 var collectionDto = _collectionClass.ReturnACollection(config, id);
-
+        
                 if (collectionDto != null)
                 {
                     var collectionMapper = new CollectionsMapper();
@@ -97,7 +99,7 @@ namespace LibraBoekenBeheerder.Controllers
                 {
                     return Content("Book not found!");
                 }
-
+        
             }
             catch (Exception e)
             {

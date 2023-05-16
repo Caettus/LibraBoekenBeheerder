@@ -1,10 +1,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection.Emit;
+using LibraDTO;
 using LibraInterface;
 using Microsoft.Extensions.Configuration;
 
-namespace LibraDTO;
+namespace LibraDB;
 
 public class CollectionDAL : ICollection
 {

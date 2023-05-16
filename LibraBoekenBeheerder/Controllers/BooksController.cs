@@ -15,24 +15,24 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly Collection _collectionClass;
         private readonly Books _booksClass;
         private readonly IConfiguration _configuration;
         private readonly BooksMapper _booksMapper;
+        private readonly Collection _collection;
 
         public BooksController(IConfiguration configuration, Collection collectionClass, Books booksClass, BooksMapper booksMapper)
         {
             _configuration = configuration;
-            _collectionClass = collectionClass;
             _booksClass = booksClass;
             _booksMapper = booksMapper;
+            _collection = collectionClass;
         }
 
     public ActionResult Create()
         {
             IConfiguration config = _configuration;
             //add collections to dropdown list
-            var collectionDropDownList = _collectionClass.ReturnAllCollections(config);
+            var collectionDropDownList = _collection.ReturnAllCollections(config);
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {
@@ -90,7 +90,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration config = _configuration;
-                var collectionDropDownList = _collectionClass.ReturnCollectionsContaintingBook(id, config);
+                var collectionDropDownList = _collection.ReturnCollectionsContaintingBook(id, config);
 
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                 {
@@ -116,14 +116,15 @@ namespace LibraBoekenBeheerder.Controllers
             catch (Exception e)
             {
                 ViewBag.Message = $"Exception: {e}";
-                throw;
             }
+
+            return View();
         }
 
         public ActionResult Index()
         {
             var configuration = HttpContext.RequestServices.GetService<IConfiguration>();
-            var returnBooksList = _booksClass.ReturnAllBooks(configuration);
+            var returnBooksList = _booksClass.ReturnAllBooks(_configuration);
 
             var booksList = new List<BooksModel>();
             foreach (var item in returnBooksList)
@@ -145,7 +146,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration configuration = _configuration;
-                var collectionDropDownList = _collectionClass.ReturnCollectionsNotContaintingBook(bookId, configuration);
+                var collectionDropDownList = _collection.ReturnCollectionsNotContaintingBook(bookId, configuration);
 
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                 {

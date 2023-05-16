@@ -11,11 +11,11 @@ public class Startup
     {
         _configuration = configuration;
     }
-
+    
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddScoped<ICollection, Collection>();
-
-        services.Register();
+        services.AddScoped(typeof(ICollection), typeof(LibraDB.CollectionDAL));
+        services.AddScoped<CollectionsMapper>();
+        services.AddScoped<CollectionsController>();
     }
 }
