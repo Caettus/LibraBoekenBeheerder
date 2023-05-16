@@ -15,5 +15,6 @@ namespace LibraInterface
         bool CreateCollection(CollectionDTO collectionsDto);
         List<CollectionDTO> GetCollectionsNotContainingBook(int id);
         List<CollectionDTO> GetCollectionsContainingBook(int id);
-    }
+        List<BooksDTO> GetBooksInCollection(int id);
+     }
 }

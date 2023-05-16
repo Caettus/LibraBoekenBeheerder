@@ -162,4 +162,29 @@ public class CollectionDAL : ICollection
         con.Close();
         return collectionlist;
     }
+
+    public List<BooksDTO> GetBooksInCollection(int id)
+    {
+        List<BooksDTO> booksList = new List<BooksDTO>();
+        connection();
+        SqlCommand cmd = new SqlCommand(
+            "SELECT b.BookId, b.Title " +
+            "FROM Books b " +
+            "LEFT JOIN CollectionBooks cb ON b.BookId = cb.BookId AND cb.CollectionID = @collectionId " +
+            "WHERE cb.CollectionId = @collectionId", con);
+        cmd.Parameters.AddWithValue("@collectionId", id);
+        cmd.CommandType= CommandType.Text;
+        con.Open();
+        SqlDataReader rdr = cmd.ExecuteReader();
+        while (rdr.Read())
+        {
+            var book = new BooksDTO();
+
+            book.BookId = Convert.ToInt32(rdr["BookId"]);
+            book.Title = rdr["Title"].ToString();
+            booksList.Add(book);
+        }
+        con.Close();
+        return booksList;
+    }
 }

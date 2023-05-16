@@ -18,6 +18,7 @@ namespace LibraLogic
         public string Name { get; set; }
 
         CollectionMapper _collectionMapper = new CollectionMapper();
+        BooksMapper _booksMapper = new BooksMapper();   
 
         public List<Collection> ReturnAllCollections(IConfiguration configuration)
         {
@@ -39,6 +40,7 @@ namespace LibraLogic
 
             return new List<Collection>();
         }
+
 
         public Collection ReturnACollection(IConfiguration configuration, int id)
         {
@@ -81,6 +83,24 @@ namespace LibraLogic
             }
 
             return new List<Collection>();
+        }
+
+        public List<Books> ReturnBooksInCollection(int id, IConfiguration configuration)
+        {
+            try
+            {
+                ICollection getBooksinCollection = DALFactory.GetCollectionDAL(configuration);
+                List<BooksDTO> returnBooksDtoList = getBooksinCollection.GetBooksInCollection(id);
+                List<Books> returnBooksList = 
+                    returnBooksDtoList.Select(_booksMapper.toClass).ToList();
+
+                return returnBooksList;
+            }
+            catch (Exception e )
+            {
+                Console.WriteLine($"Could not return books in Collection.cs: {e.Message}");
+            }
+            return new List<Books>();
         }
 
         public List<Collection> ReturnCollectionsContaintingBook(int id, IConfiguration configuration)

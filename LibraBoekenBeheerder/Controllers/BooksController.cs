@@ -15,10 +15,11 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        private Books _booksClass;
-        private IConfiguration _configuration;
-        private BooksMapper _booksMapper;
-        public Collection _collection;
+        //readonly is het, als ik Collection _collection = new Collection(); doe werkt ie ook niet.
+        private readonly Books _booksClass;
+        private readonly IConfiguration _configuration;
+        private readonly BooksMapper _booksMapper;
+        private readonly Collection _collection;
 
         public BooksController(IConfiguration configuration, Collection collectionClass, Books booksClass, BooksMapper booksMapper)
         {
@@ -129,6 +130,34 @@ namespace LibraBoekenBeheerder.Controllers
             }
 
             return View(booksList);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (_booksClass.DeleteBook(_configuration, id))
+                    {
+                        ViewBag.Message = "Book succesfully deleted";
+                        ModelState.Clear();
+                    }
+                }
+                else
+                {
+                    var errors = ModelState.Values.SelectMany(v => v.Errors);
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine($"{error.ErrorMessage}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Delete stuff in the controller did not work: {e.Message}");
+            }
+            return View() ;
         }
 
 
