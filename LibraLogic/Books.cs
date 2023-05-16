@@ -58,6 +58,27 @@ public class Books
         return false;
     }
 
+    public bool DeleteBook(IConfiguration configuration, int id)
+    {
+        try
+        {
+            IBooks Book = DALFactory.GetBooksDAL(configuration);
+            if (Book.DeleteBook(id))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Book could not be deleted in logic: {e.Message}");
+        }
+        return false;
+    }
+
     public bool EditBook(Books booksClass, int selectedCollectionId, int bookId, IConfiguration configuration)
     {
         try

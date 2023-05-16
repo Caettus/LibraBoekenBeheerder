@@ -130,6 +130,23 @@ public class BooksDAL : IBooks
         return i >= 1;
     }
 
+    public bool DeleteBook(int id) 
+    {
+        connection();
+        SqlCommand cmd = new SqlCommand("DELETE FROM dbo.Books WHERE BookId = @id", con);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.CommandType= CommandType.Text;
+        con.Open();
+        var i = cmd.ExecuteNonQuery();
+        con.Close();
+
+        if (i >= 1)
+            return true;
+        else
+            return false;
+
+    }
+
     public int GetLastInsertedBookId()
     {
         connection();

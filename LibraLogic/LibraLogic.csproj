@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LibraDTO\LibraDTO.csproj" />
       <ProjectReference Include="..\LibraFactory\LibraFactory.csproj" />
     </ItemGroup>
 

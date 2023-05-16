@@ -15,10 +15,10 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly Books _booksClass;
-        private readonly IConfiguration _configuration;
-        private readonly BooksMapper _booksMapper;
-        private readonly Collection _collection;
+        private Books _booksClass;
+        private IConfiguration _configuration;
+        private BooksMapper _booksMapper;
+        public Collection _collection;
 
         public BooksController(IConfiguration configuration, Collection collectionClass, Books booksClass, BooksMapper booksMapper)
         {
@@ -43,11 +43,6 @@ namespace LibraBoekenBeheerder.Controllers
             ViewBag.collectionDropDownList = items;
             return View();
         }
-
-
-
-
-
         [HttpPost]
         public ActionResult Create(BooksModel booksModel, int selectedCollectionId)
         {

@@ -1,5 +1,5 @@
 using LibraDTO;
-
+using System.Numerics;
 
 namespace LibraInterface;
 
@@ -10,4 +10,5 @@ public interface IBooks
     int GetLastInsertedBookId();
     List<BooksDTO> GetAllBooks();
     BooksDTO GetABook(int id);
+    bool DeleteBook(int id);
 }
