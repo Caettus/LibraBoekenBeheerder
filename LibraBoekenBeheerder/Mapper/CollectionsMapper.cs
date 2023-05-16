@@ -5,21 +5,21 @@ namespace LibraLogic;
 
 public class CollectionsMapper
 {
-    public Collection toClass(CollectionsModel collectionsModel)
+    public CollectionClass toClass(CollectionsModel collectionsModel)
     {
-        return new Collection()
+        return new CollectionClass()
         {
             CollectionsID = collectionsModel.CollectionID,
             Name = collectionsModel.Name
         };
     }
 
-    public CollectionsModel toModel(Collection collectionClass)
+    public CollectionsModel toModel(CollectionClass collectionClassClass)
     {
         return new CollectionsModel()
         {
-            CollectionID = collectionClass.CollectionsID,
-            Name = collectionClass.Name
+            CollectionID = collectionClassClass.CollectionsID,
+            Name = collectionClassClass.Name
         };
     }
 }

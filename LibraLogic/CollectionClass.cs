@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LibraLogic
 {
-    public class Collection
+    public class CollectionClass
 
     {
         public int CollectionsID { get; set; }
@@ -20,7 +20,7 @@ namespace LibraLogic
         CollectionMapper _collectionMapper = new CollectionMapper();
         BooksMapper _booksMapper = new BooksMapper();   
 
-        public List<Collection> ReturnAllCollections(IConfiguration configuration)
+        public List<CollectionClass> ReturnAllCollections(IConfiguration configuration)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace LibraLogic
 
                 List<CollectionDTO> returnCollectionDtoList = getAllCollections.GetAllCollections();
 
-                List<Collection> returnCollectionList =
+                List<CollectionClass> returnCollectionList =
                     returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
 
                 return returnCollectionList;
@@ -38,11 +38,11 @@ namespace LibraLogic
                 Console.WriteLine($"Could not return all collections: {e.Message}");
             }
 
-            return new List<Collection>();
+            return new List<CollectionClass>();
         }
 
 
-        public Collection ReturnACollection(IConfiguration configuration, int id)
+        public CollectionClass ReturnACollection(IConfiguration configuration, int id)
         {
             try
             {
@@ -51,8 +51,8 @@ namespace LibraLogic
         
                 if (dto != null)
                 {
-                    Collection collection = _collectionMapper.toClass(dto);
-                    return collection;
+                    CollectionClass collectionClass = _collectionMapper.toClass(dto);
+                    return collectionClass;
                 }
             }
             catch (Exception e)
@@ -64,7 +64,7 @@ namespace LibraLogic
         }
 
 
-        public List<Collection> ReturnCollectionsNotContaintingBook(int id, IConfiguration configuration)
+        public List<CollectionClass> ReturnCollectionsNotContaintingBook(int id, IConfiguration configuration)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace LibraLogic
 
                 List<CollectionDTO> returnCollectionDtoList = getCollections.GetCollectionsNotContainingBook(id);
 
-                List<Collection> returnCollectionList =
+                List<CollectionClass> returnCollectionList =
                     returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
 
                 return returnCollectionList;
@@ -82,7 +82,7 @@ namespace LibraLogic
                 Console.WriteLine($"Could not return collections: {e.Message}");
             }
 
-            return new List<Collection>();
+            return new List<CollectionClass>();
         }
 
         public List<Books> ReturnBooksInCollection(int id, IConfiguration configuration)
@@ -98,12 +98,12 @@ namespace LibraLogic
             }
             catch (Exception e )
             {
-                Console.WriteLine($"Could not return books in Collection.cs: {e.Message}");
+                Console.WriteLine($"Could not return books in CollectionClass.cs: {e.Message}");
             }
             return new List<Books>();
         }
 
-        public List<Collection> ReturnCollectionsContaintingBook(int id, IConfiguration configuration)
+        public List<CollectionClass> ReturnCollectionsContaintingBook(int id, IConfiguration configuration)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace LibraLogic
 
                 List<CollectionDTO> returnCollectionDtoList = getCollections.GetCollectionsContainingBook(id);
 
-                List<Collection> returnCollectionList =
+                List<CollectionClass> returnCollectionList =
                     returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
 
                 return returnCollectionList;
@@ -121,13 +121,13 @@ namespace LibraLogic
                 Console.WriteLine($"Could not return collections: {e.Message}");
             }
 
-            return new List<Collection>();
+            return new List<CollectionClass>();
         }
 
-        public bool CreateCollection(Collection collection, IConfiguration configuration)
+        public bool CreateCollection(CollectionClass collectionClass, IConfiguration configuration)
         {
             ICollection createCollection = DALFactory.GetCollectionDAL(configuration);
-            var collectionDTO = _collectionMapper.toDTO(collection);
+            var collectionDTO = _collectionMapper.toDTO(collectionClass);
             try
             {
                 if (createCollection.CreateCollection(collectionDTO))
@@ -137,7 +137,7 @@ namespace LibraLogic
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Collection could not be created: {e.Message}");
+                Console.WriteLine($"CollectionClass could not be created: {e.Message}");
             }
 
             return false;

@@ -14,15 +14,15 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class CollectionsController : Controller
     {
-        private readonly Collection _collectionClass;
+        private readonly CollectionClass _collectionClassClass;
         private readonly Books _booksClass;
         private readonly IConfiguration _configuration;
         private readonly CollectionsMapper _collectionsMapper;
 
-        public CollectionsController(IConfiguration configuration, Collection collectionClass, Books booksClass, CollectionsMapper collectionsMapper)
+        public CollectionsController(IConfiguration configuration, CollectionClass collectionClassClass, Books booksClass, CollectionsMapper collectionsMapper)
         {
             _configuration = configuration;
-            _collectionClass = collectionClass;
+            _collectionClassClass = collectionClassClass;
             _booksClass = booksClass;
             _collectionsMapper = collectionsMapper;
         }
@@ -36,7 +36,7 @@ namespace LibraBoekenBeheerder.Controllers
 
             List<CollectionsModel> collectionsModels = new List<CollectionsModel>();
 
-            var dtoList = _collectionClass.ReturnAllCollections(_configuration);
+            var dtoList = _collectionClassClass.ReturnAllCollections(_configuration);
             foreach (var dtoItem in dtoList)
             {
                 var modelItem = _collectionsMapper.toModel(dtoItem);
@@ -53,20 +53,20 @@ namespace LibraBoekenBeheerder.Controllers
                 if (ModelState.IsValid)
                 {
                     var _dto = _collectionsMapper.toClass(collectionsModel);
-                    if (_collectionClass.CreateCollection(_dto, configuration))
+                    if (_collectionClassClass.CreateCollection(_dto, configuration))
                     {
-                        ViewBag.Message = "Collection has been added succesfully";
+                        ViewBag.Message = "CollectionClass has been added succesfully";
                         ModelState.Clear();
                     }
                     else
                     {
-                        ViewBag.Message = "Error 69: Error occured while creating the collection";
+                        ViewBag.Message = "Error 69: Error occured while creating the collectionClass";
                     }
                 }
             }
             catch (Exception e)
             {
-                ViewBag.Message = $"Error 420: Error occured while creating the collection {e.Message}";
+                ViewBag.Message = $"Error 420: Error occured while creating the collectionClass {e.Message}";
                 throw;
             }
             return View(collectionsModel);
@@ -78,7 +78,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration config = _configuration;
-                var collectionDropDownList = _collectionClass.ReturnCollectionsContaintingBook(id, config);
+                var collectionDropDownList = _collectionClassClass.ReturnCollectionsContaintingBook(id, config);
         
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                 {
@@ -87,7 +87,7 @@ namespace LibraBoekenBeheerder.Controllers
         
                 ViewBag.collectionDropDownList = items;
         
-                var collectionDto = _collectionClass.ReturnACollection(config, id);
+                var collectionDto = _collectionClassClass.ReturnACollection(config, id);
         
                 if (collectionDto != null)
                 {

@@ -15,25 +15,25 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        //readonly is het, als ik Collection _collection = new Collection(); doe werkt ie ook niet.
+        //readonly is het, als ik CollectionClass _collectionClass = new CollectionClass(); doe werkt ie ook niet.
         private readonly Books _booksClass;
         private readonly IConfiguration _configuration;
         private readonly BooksMapper _booksMapper;
-        private readonly Collection _collection;
+        private readonly CollectionClass _collectionClass;
 
-        public BooksController(IConfiguration configuration, Collection collectionClass, Books booksClass, BooksMapper booksMapper)
+        public BooksController(IConfiguration configuration, CollectionClass collectionClassClass, Books booksClass, BooksMapper booksMapper)
         {
             _configuration = configuration;
             _booksClass = booksClass;
             _booksMapper = booksMapper;
-            _collection = collectionClass;
+            _collectionClass = collectionClassClass;
         }
 
     public ActionResult Create()
         {
             IConfiguration config = _configuration;
             //add collections to dropdown list
-            var collectionDropDownList = _collection.ReturnAllCollections(config);
+            var collectionDropDownList = _collectionClass.ReturnAllCollections(config);
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {
@@ -86,7 +86,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration config = _configuration;
-                var collectionDropDownList = _collection.ReturnCollectionsContaintingBook(id, config);
+                var collectionDropDownList = _collectionClass.ReturnCollectionsContaintingBook(id, config);
 
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                 {
@@ -132,33 +132,33 @@ namespace LibraBoekenBeheerder.Controllers
             return View(booksList);
         }
 
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    if (_booksClass.DeleteBook(_configuration, id))
-                    {
-                        ViewBag.Message = "Book succesfully deleted";
-                        ModelState.Clear();
-                    }
-                }
-                else
-                {
-                    var errors = ModelState.Values.SelectMany(v => v.Errors);
-                    foreach (var error in errors)
-                    {
-                        Console.WriteLine($"{error.ErrorMessage}");
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Delete stuff in the controller did not work: {e.Message}");
-            }
-            return View() ;
-        }
+        // public ActionResult Delete(int id)
+        // {
+        //     try
+        //     {
+        //         if (ModelState.IsValid)
+        //         {
+        //             if (_booksClass.DeleteBook(_configuration, id))
+        //             {
+        //                 ViewBag.Message = "Book succesfully deleted";
+        //                 ModelState.Clear();
+        //             }
+        //         }
+        //         else
+        //         {
+        //             var errors = ModelState.Values.SelectMany(v => v.Errors);
+        //             foreach (var error in errors)
+        //             {
+        //                 Console.WriteLine($"{error.ErrorMessage}");
+        //             }
+        //         }
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Console.WriteLine($"Delete stuff in the controller did not work: {e.Message}");
+        //     }
+        //     return View() ;
+        // }
 
 
 
@@ -170,7 +170,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration configuration = _configuration;
-                var collectionDropDownList = _collection.ReturnCollectionsNotContaintingBook(bookId, configuration);
+                var collectionDropDownList = _collectionClass.ReturnCollectionsNotContaintingBook(bookId, configuration);
 
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                 {

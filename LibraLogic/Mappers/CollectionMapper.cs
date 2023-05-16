@@ -9,18 +9,18 @@ namespace LibraLogic.Mappers
 {
     internal class CollectionMapper
     {
-        public CollectionDTO toDTO(Collection collectionClass)
+        public CollectionDTO toDTO(CollectionClass collectionClassClass)
         {
             return new CollectionDTO()
             {
-                CollectionsID = collectionClass.CollectionsID,
-                Name = collectionClass.Name
+                CollectionsID = collectionClassClass.CollectionsID,
+                Name = collectionClassClass.Name
             };
         }
 
-        public Collection toClass(CollectionDTO collectionsDto)
+        public CollectionClass toClass(CollectionDTO collectionsDto)
         {
-            return new Collection()
+            return new CollectionClass()
             {
                 CollectionsID = collectionsDto.CollectionsID,
                 Name = collectionsDto.Name
