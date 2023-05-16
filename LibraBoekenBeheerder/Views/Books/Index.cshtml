@@ -50,9 +50,10 @@
 
         </tr>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=book.BookId})
-            @Html.ActionLink("Details", "Details", new { id=book.BookId})
-            @Html.ActionLink("Delete", "Delete", new { id=book.BookId})
+            <a asp-action="Details" asp-controller="Details" asp-route-id="@book.BookId" class="btn btn-success">Results</a>
+
+            <a asp-action="Edit" asp-controller="Edit" asp-route-id="@book.BookId" class="btn btn-info" style="background-color:#FFE000; border-color:#FFE000">Info</a>
+            <a asp-action="" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book from the records?')">Delete</a>
         </td>
     }
 </table>

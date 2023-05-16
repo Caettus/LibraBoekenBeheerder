@@ -14,13 +14,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        // Other service registrations...
+        services.AddScoped<ICollection, Collection>();
 
-        services.AddScoped<Collection>(); // Add this line to register the Collection class
-        services.AddScoped<CollectionsMapper>();
-        services.AddScoped<CollectionsController>();
-
-        // Other registrations...
+        services.Register();
     }
-
 }
