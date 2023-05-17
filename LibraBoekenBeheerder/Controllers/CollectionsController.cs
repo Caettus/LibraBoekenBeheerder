@@ -19,12 +19,12 @@ namespace LibraBoekenBeheerder.Controllers
         private readonly IConfiguration _configuration;
         private readonly CollectionsMapper _collectionsMapper;
 
-        public CollectionsController(IConfiguration configuration, CollectionClass collectionClassClass, Books booksClass, CollectionsMapper collectionsMapper)
+        public CollectionsController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _collectionClassClass = collectionClassClass;
-            _booksClass = booksClass;
-            _collectionsMapper = collectionsMapper;
+            _collectionClassClass = new CollectionClass();
+            _booksClass = new Books();
+            _collectionsMapper = new CollectionsMapper();
         }
 
         [HttpGet]

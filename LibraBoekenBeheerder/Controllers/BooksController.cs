@@ -15,18 +15,18 @@ namespace LibraBoekenBeheerder.Controllers
 {
     public class BooksController : Controller
     {
-        //readonly is het, als ik CollectionClass _collectionClass = new CollectionClass(); doe werkt ie ook niet.
+        
         private readonly Books _booksClass;
         private readonly IConfiguration _configuration;
         private readonly BooksMapper _booksMapper;
         private readonly CollectionClass _collectionClass;
 
-        public BooksController(IConfiguration configuration, CollectionClass collectionClassClass, Books booksClass, BooksMapper booksMapper)
+        public BooksController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _booksClass = booksClass;
-            _booksMapper = booksMapper;
-            _collectionClass = collectionClassClass;
+            _booksClass = new Books();
+            _booksMapper = new BooksMapper();
+            _collectionClass = new CollectionClass();
         }
 
     public ActionResult Create()
@@ -164,7 +164,6 @@ namespace LibraBoekenBeheerder.Controllers
 
 
         [HttpPut]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(string _method, BooksModel booksModel, int selectedCollectionId, int bookId = 0)
         {
             try
@@ -185,9 +184,6 @@ namespace LibraBoekenBeheerder.Controllers
                     var mapper = new BooksMapper();
                     var bookClass = mapper.toClass(booksModel);
 
-                    //Dit om ervoor te zorgen dat die het als een PUT request ziet in plaats van een POST
-                    if (_method == "PUT")
-                    {
                         if (_booksClass.EditBook(bookClass, selectedCollectionId, bookId, _configuration))
                         {
                             ViewBag.Message = "Now check the database to see if it's true";
@@ -197,11 +193,6 @@ namespace LibraBoekenBeheerder.Controllers
                         {
                             ViewBag.Message = "An error occurred while updating the book";
                         }
-                    }
-                    else
-                    {
-                        ViewBag.Message = "Invalid request method";
-                    }
                 }
                 else
                 {
