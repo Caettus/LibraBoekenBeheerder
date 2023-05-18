@@ -142,5 +142,22 @@ namespace LibraLogic
 
             return false;
         }
+
+        public bool RemoveLinkBookToCollection(int CollectionID, int BookId, IConfiguration configuration)
+        {
+            ICollection collectionDAL = DALFactory.GetCollectionDAL(configuration);
+            try
+            {
+                if (collectionDAL.RemoveLinkBookFromCollection(CollectionID, BookId))
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Book could not be removed from Collection: {e.Message}");
+            }
+            return false;
+        }
     }
 }

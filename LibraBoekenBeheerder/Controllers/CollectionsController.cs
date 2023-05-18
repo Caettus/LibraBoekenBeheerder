@@ -78,14 +78,14 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration config = _configuration;
-                var collectionDropDownList = _collectionClassClass.ReturnCollectionsContaintingBook(id, config);
+                var collectionBooksList = _collectionClassClass.ReturnBooksInCollection(id, config);
         
-                List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+                List<BooksModel> items = collectionBooksList.Select(cddl => new BooksModel
                 {
-                    Text = cddl.Name.ToString()
+                    Title = cddl.Title.ToString()
                 }).ToList();
         
-                ViewBag.collectionDropDownList = items;
+                ViewBag.collectionBooksList = items;
         
                 var collectionDto = _collectionClassClass.ReturnACollection(config, id);
         
@@ -106,6 +106,24 @@ namespace LibraBoekenBeheerder.Controllers
                 ViewBag.Message = $"Exception: {e}";
                 throw;
             }
+        }
+        public ActionResult DeleteBook(int collectionID, int bookID, IConfiguration configuration)
+        {
+
+            if (_collectionClassClass.RemoveLinkBookToCollection(collectionID, bookID, configuration))
+            {
+                ViewBag.Message = "Book succesfully removed from collection";
+                ModelState.Clear();
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine($"{error.ErrorMessage}");
+                }
+            }
+            return RedirectToAction("Index");
         }
     } 
 }

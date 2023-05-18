@@ -132,59 +132,56 @@ namespace LibraBoekenBeheerder.Controllers
             return View(booksList);
         }
 
-        // public ActionResult Delete(int id)
-        // {
-        //     try
-        //     {
-        //         if (ModelState.IsValid)
-        //         {
-        //             if (_booksClass.DeleteBook(_configuration, id))
-        //             {
-        //                 ViewBag.Message = "Book succesfully deleted";
-        //                 ModelState.Clear();
-        //             }
-        //         }
-        //         else
-        //         {
-        //             var errors = ModelState.Values.SelectMany(v => v.Errors);
-        //             foreach (var error in errors)
-        //             {
-        //                 Console.WriteLine($"{error.ErrorMessage}");
-        //             }
-        //         }
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Console.WriteLine($"Delete stuff in the controller did not work: {e.Message}");
-        //     }
-        //     return View() ;
-        // }
+
+        public ActionResult Delete(int id)
+        {
+                
+            if (_booksClass.DeleteBook(_configuration, id))
+            {
+                ViewBag.Message = "Book succesfully deleted";
+                ModelState.Clear();
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine($"{error.ErrorMessage}");
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            IConfiguration configuration = _configuration;
+            var collectionDropDownList = _collectionClass.ReturnCollectionsNotContaintingBook(id, configuration);
+
+            List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
+            {
+                Text = cddl.Name.ToString(),
+                Value = cddl.CollectionsID.ToString()
+            }).ToList();
+
+            ViewBag.collectionDropDownList = items;
+            return View();
+        }
 
 
-
-
-        [HttpPut]
-        public ActionResult Edit(string _method, BooksModel booksModel, int selectedCollectionId, int bookId = 0)
+        [HttpPost]
+        public ActionResult Edit(BooksModel booksModel, int selectedCollectionId, int id)
         {
             try
             {
                 IConfiguration configuration = _configuration;
-                var collectionDropDownList = _collectionClass.ReturnCollectionsNotContaintingBook(bookId, configuration);
-
-                List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
-                {
-                    Text = cddl.Name.ToString()
-                }).ToList();
-
-                ViewBag.collectionDropDownList = items;
-
-                var bookDto = _booksClass.GetABook(bookId, configuration);
+                var bookDto = _booksClass.GetABook(id, configuration);
                 if (bookDto != null && ModelState.IsValid)
                 {
                     var mapper = new BooksMapper();
                     var bookClass = mapper.toClass(booksModel);
 
-                        if (_booksClass.EditBook(bookClass, selectedCollectionId, bookId, _configuration))
+                        if (_booksClass.EditBook(bookClass, selectedCollectionId, id, _configuration))
                         {
                             ViewBag.Message = "Now check the database to see if it's true";
                             ModelState.Clear();
@@ -207,8 +204,7 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 ViewBag.Message = $"Exception: {e}";
             }
-
-            return View(booksModel);
+            return View();
         }
     }
 }

@@ -79,31 +79,38 @@ public class Books
         return false;
     }
 
-    public bool EditBook(Books booksClass, int selectedCollectionId, int bookId, IConfiguration configuration)
+    public bool EditBook(Books booksClass, int? selectedCollectionId, int bookId, IConfiguration configuration)
     {
         try
         {
             IBooks editBook = DALFactory.GetBooksDAL(configuration);
-
-            ICollection collectionBooksLink = DALFactory.GetCollectionDAL(configuration);
-            CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
-            collectionBooksDTO.CollectionID = selectedCollectionId;
-            collectionBooksDTO.BookId = bookId;
-
             var dto = _booksMapper.toDTO(booksClass);
 
-            if (editBook.EditBook(dto) && collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
+            if (editBook.EditBook(dto, bookId))
             {
-                return true;
+                if (selectedCollectionId.HasValue)
+                {
+                    ICollection collectionBooksLink = DALFactory.GetCollectionDAL(configuration);
+                    CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
+                    collectionBooksDTO.CollectionID = selectedCollectionId.Value;
+                    collectionBooksDTO.BookId = bookId;
+
+                    return collectionBooksLink.LinkBookToCollection(selectedCollectionId.Value, bookId, collectionBooksDTO);
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Shits fucked mate: {e.Message}");
-            return false;
+            Console.WriteLine($"An error occurred: {e.Message}");
         }
         return false;
     }
+
+
 
     public Books GetABook(int id, IConfiguration configuration)
     {

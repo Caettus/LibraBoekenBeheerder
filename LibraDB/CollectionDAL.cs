@@ -111,6 +111,24 @@ public class CollectionDAL : ICollection
             return false;
     }
 
+    public bool RemoveLinkBookFromCollection(int CollectionID, int BookId)
+    {
+        connection();
+        SqlCommand cmd = new SqlCommand("DELETE FROM [dbo].[CollectionBooks] WHERE [CollectionID] = @CollectionID AND [BookId] = @BookId;", con);
+        cmd.CommandType = CommandType.Text;
+
+        cmd.Parameters.AddWithValue("@CollectionID", CollectionID);
+        cmd.Parameters.AddWithValue("@BookId", BookId);
+
+        con.Open();
+        var i = cmd.ExecuteNonQuery();
+        con.Close();
+        if (i >= 1)
+            return true;
+        else
+            return false;
+    }
+
     public List<CollectionDTO> GetCollectionsNotContainingBook(int id)
     {
         List<CollectionDTO> collectionlist = new List<CollectionDTO>();
@@ -134,6 +152,7 @@ public class CollectionDAL : ICollection
 
         }
         con.Close();
+        Console.WriteLine(collectionlist);
         return collectionlist;
     }
 
