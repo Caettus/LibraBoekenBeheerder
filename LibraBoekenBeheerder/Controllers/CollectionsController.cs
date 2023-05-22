@@ -82,7 +82,8 @@ namespace LibraBoekenBeheerder.Controllers
         
                 List<BooksModel> items = collectionBooksList.Select(cddl => new BooksModel
                 {
-                    Title = cddl.Title.ToString()
+                    Title = cddl.Title.ToString(),
+                    BookId = cddl.BookId
                 }).ToList();
         
                 ViewBag.collectionBooksList = items;
@@ -107,10 +108,11 @@ namespace LibraBoekenBeheerder.Controllers
                 throw;
             }
         }
-        public ActionResult DeleteBook(int collectionID, int bookID, IConfiguration configuration)
+        public ActionResult DeleteBook(int collectionID, int bookId)
         {
+            IConfiguration configuration = _configuration;
 
-            if (_collectionClassClass.RemoveLinkBookToCollection(collectionID, bookID, configuration))
+            if (_collectionClassClass.RemoveLinkBookToCollection(collectionID, bookId, _configuration))
             {
                 ViewBag.Message = "Book succesfully removed from collection";
                 ModelState.Clear();
