@@ -28,7 +28,7 @@ namespace LibraBoekenBeheerder.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             CollectionsModel collectionsModel = new CollectionsModel();
             
@@ -41,6 +41,13 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 var modelItem = _collectionsMapper.toModel(dtoItem);
                 collectionsModels.Add(modelItem);
+            }
+            
+            // Search
+            //niet een geweldige manier maar nou hoef ik tenminste geen javscr*pt te gebruiken.
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                collectionsModels = collectionsModels.Where(s => s.Name!.Contains(searchString)).ToList();
             }
             return View(collectionsModels);
         }

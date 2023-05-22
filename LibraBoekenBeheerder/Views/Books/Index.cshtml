@@ -7,6 +7,13 @@
     @Html.ActionLink("Create Book", "Create")
 </p>
 
+<form asp-controller="Books" asp-action="Index">
+    <p>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <style>
     body {
         background-color: #fff;

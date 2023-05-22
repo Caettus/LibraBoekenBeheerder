@@ -113,21 +113,29 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 ViewBag.Message = $"Exception: {e}";
             }
-
             return View();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             var configuration = HttpContext.RequestServices.GetService<IConfiguration>();
             var returnBooksList = _booksClass.ReturnAllBooks(_configuration);
-
+            
+            //Return list of books
             var booksList = new List<BooksModel>();
             foreach (var item in returnBooksList)
             {
                 var booksItem = _booksMapper.toModel(item);
                 booksList.Add(booksItem);
             }
+            
+            // Search
+            //niet een geweldige manier maar nou hoef ik tenminste geen javscr*pt te gebruiken.
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                booksList = booksList.Where(s => s.Title!.Contains(searchString)).ToList();
+            }
+
 
             return View(booksList);
         }
