@@ -16,10 +16,6 @@ public class BooksDAL : IBooks
         _configuration = configuration;
     }
 
-    public BooksDAL()
-    {
-
-    }
     private SqlConnection con;
 
     private void connection()

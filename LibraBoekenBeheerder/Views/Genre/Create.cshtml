@@ -1,0 +1,46 @@
+﻿@model LibraBoekenBeheerder.Models.GenreModel
+
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    <form asp-controller="Genre" asp-action="Create">
+        <div class="form-horizontal">
+            <h5>Add a Genre</h5>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="text" asp-for="GenreName" placeholder="Name of Genre" />
+
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+
+            <h3>@ViewBag.Message</h3>
+        </div>
+
+    </form>
+    var errors = ViewData.ModelState.Values.SelectMany(v => v.Errors);
+    foreach (var error in errors)
+    {
+        ViewBag.Message = $"{error.ErrorMessage}";
+
+    }
+
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

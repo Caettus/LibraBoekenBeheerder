@@ -19,5 +19,10 @@ namespace LibraFactory
         {
             return new CollectionDAL(configuration);
         }
+
+        public static IGenre GetGenreDAL(IConfiguration configuration) 
+        {
+            return new GenreDAL(configuration);
+        }
     }
 }

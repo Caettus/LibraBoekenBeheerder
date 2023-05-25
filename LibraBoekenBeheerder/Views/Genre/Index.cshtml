@@ -1,42 +1,59 @@
-﻿@model IEnumerable<LibraBoekenBeheerder.Models.GenreModel>
-
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@{
+    ViewData["Title"] = "My Genres";
 }
-
-<h1>Index</h1>
+@model List<GenreModel>;
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @Html.ActionLink("Create New Genre", "Create")
 </p>
-<table class="table">
-    <thead>
+
+<form asp-controller="Genre" asp-action="Index">
+    <p>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<style>
+    body {
+        background-color: #fff;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #016d45;
+        color: #fff;
+    }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<table>
+    <tr>
+        <th>Collection ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var genre in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.GenreId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GenreName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
+            <td>@genre.GenreId</td>
+            <td>@genre.GenreName</td>
             <td>
-                @Html.DisplayFor(modelItem => item.GenreId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GenreName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-action="Edit" asp-controller="Genre" asp-route-id="@genre.GenreId" class="btn btn-info" style="background-color:#FFE000; border-color:#FFE000">Edit</a>
+                <a asp-action="Details" asp-controller="Genre" asp-route-id="@genre.GenreId" class="btn btn-success">Details</a>
+                <a asp-action="Delete" asp-controller="Genre" asp-route-id="@genre.GenreId" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this genre from the records?')">Delete</a>
             </td>
         </tr>
-}
-    </tbody>
+    }
 </table>
