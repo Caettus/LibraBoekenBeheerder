@@ -11,5 +11,8 @@ namespace LibraInterface
     {
         List<GenreDTO> GetAllGenres();
         bool CreateGenre(GenreDTO genreDto);
+        bool DeleteGenre(int id);
+        bool LinkGenreToBook(int GenreId, int BookId, BookGenresDTO bookGenresDto);
+        List<GenreDTO> GetGenresFromBook(int id);
     }
 }

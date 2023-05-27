@@ -55,5 +55,43 @@ namespace LibraLogic
 
             return false;
         }
+        public bool DeleteGenre(IConfiguration configuration, int id)
+        {
+            try
+            {
+                IGenre Genre = DALFactory.GetGenreDAL(configuration);
+                if (Genre.DeleteGenre(id))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Genre could not be deleted in logic: {e.Message}");
+            }
+            return false;
+        }
+        
+        public List<Genre> ReturnGenresFromBook(int id, IConfiguration configuration)
+        {
+            try
+            {
+                IGenre getGenresFromBook = DALFactory.GetGenreDAL(configuration);
+                List<GenreDTO> returnGenreDtoList = getGenresFromBook.GetGenresFromBook(id);
+                List<Genre> returnGenreList = 
+                    returnGenreDtoList.Select(_genreMapper.toClass).ToList();
+
+                return returnGenreList;
+            }
+            catch (Exception e )
+            {
+                Console.WriteLine($"Could not return books in CollectionClass.cs: {e.Message}");
+            }
+            return new List<Genre>();
+        }
     }
 }

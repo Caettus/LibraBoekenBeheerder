@@ -23,4 +23,5 @@ public class BooksModel
 
     public string? Summary { get; set; }
     public int? SelectedCollectionId { get; set; }
+    public int? SelectedGenreId { get; set; }
 }

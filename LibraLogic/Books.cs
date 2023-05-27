@@ -26,7 +26,7 @@ public class Books
 
     BooksMapper _booksMapper = new BooksMapper();
 
-    public bool CreateBook(Books booksClass, int selectedCollectionId, IConfiguration configuration)
+    public bool CreateBook(Books booksClass, int selectedCollectionId, int selectedGenreId, IConfiguration configuration)
     {
         try
         {
@@ -38,15 +38,29 @@ public class Books
             {
                 int bookId = Book.GetLastInsertedBookId();
 
+                //boek aan collectie toevoegen
                 ICollection collectionBooksLink = DALFactory.GetCollectionDAL(configuration);
                 CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
                 collectionBooksDTO.CollectionID = selectedCollectionId;
                 collectionBooksDTO.BookId = bookId;
-
+                
                 if (collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
                 {
-                    return true;
+                    //genre aan boek toevoegen
+                    IGenre booksGenreLink = DALFactory.GetGenreDAL(configuration);
+                    BookGenresDTO bookGenresDTO = new BookGenresDTO();
+                    bookGenresDTO.GenreId = selectedGenreId;
+                    bookGenresDTO.BookId = bookId;
+                    if (booksGenreLink.LinkGenreToBook(selectedGenreId, selectedCollectionId, bookGenresDTO))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("LinkGenreToBook check kon niet worden gepassed in de logic");
+                    }
                 }
+                //iedereen blij
             }
         }
         catch (Exception ex)

@@ -178,5 +178,4 @@ public class BooksDAL : IBooks
 
         return lastInsertedId;
     }
-
 }

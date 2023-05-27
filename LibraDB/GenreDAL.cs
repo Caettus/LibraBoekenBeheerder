@@ -72,5 +72,70 @@ namespace LibraDB
             else
                 return false;
         }
+        
+        public bool DeleteGenre(int id) 
+        {
+            int i = 0;
+            connection();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("DELETE FROM dbo.Genre WHERE GenreId = @GenreId", con);
+                cmd.Parameters.AddWithValue("@GenreId", id);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                i = cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Haha sucks to suck bitch {e.Message}");
+            }
+            finally { con.Close(); }
+            return i >= 1;
+        }
+        
+        public bool LinkGenreToBook(int GenreId, int BookId, BookGenresDTO bookGenresDto)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[BookGenres] ([BookId], [GenreId]) VALUES (@BookId, @GenreId);", con);
+            cmd.CommandType = CommandType.Text;
+
+            cmd.Parameters.AddWithValue("@BookId", bookGenresDto.BookId);
+            cmd.Parameters.AddWithValue("@GenreId", bookGenresDto.GenreId);
+
+            con.Open();
+            var i = cmd.ExecuteNonQuery();
+            con.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }
+        public List<GenreDTO> GetGenresFromBook(int id)
+        {
+            List<GenreDTO> genreList = new List<GenreDTO>();
+            connection();
+            SqlCommand cmd = new SqlCommand(
+                "SELECT g.GenreId, g.GenreName " +
+                "FROM Genre g " +
+                "LEFT JOIN BookGenres bg ON g.GenreId = bg.GenreId AND bg.BookId = @BookId " +
+                "WHERE bg.BookId = @BookId", con);
+            cmd.Parameters.AddWithValue("@BookId", id);
+            cmd.CommandType = CommandType.Text;
+            con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                var genre = new GenreDTO();
+
+                genre.GenreId = Convert.ToInt32(rdr["GenreId"]);
+                genre.GenreName = rdr["GenreName"].ToString();
+                genreList.Add(genre);
+
+            }
+            con.Close();
+            return genreList;
+        }
     }
 }

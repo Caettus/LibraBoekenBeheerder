@@ -20,6 +20,7 @@ namespace LibraBoekenBeheerder.Controllers
         private readonly IConfiguration _configuration;
         private readonly BooksMapper _booksMapper;
         private readonly CollectionClass _collectionClass;
+        private readonly Genre _genreClass;
 
         public BooksController(IConfiguration configuration)
         {
@@ -27,6 +28,7 @@ namespace LibraBoekenBeheerder.Controllers
             _booksClass = new Books();
             _booksMapper = new BooksMapper();
             _collectionClass = new CollectionClass();
+            _genreClass = new Genre();
         }
 
     public ActionResult Create()
@@ -42,10 +44,21 @@ namespace LibraBoekenBeheerder.Controllers
             }).ToList();
 
             ViewBag.collectionDropDownList = items;
+            
+            //add genres to dropdown list
+            var genreDropDownList = _genreClass.ReturnAllGenres(config);
+
+            List<SelectListItem> genres = genreDropDownList.Select(cddl => new SelectListItem
+            {
+                Text = cddl.GenreName.ToString(),
+                Value = cddl.GenreId.ToString()
+            }).ToList();
+
+            ViewBag.genreDropDownList = genres;
             return View();
         }
         [HttpPost]
-        public ActionResult Create(BooksModel booksModel, int selectedCollectionId)
+        public ActionResult Create(BooksModel booksModel, int selectedCollectionId, int selectedGenreId)
         {
             try
             {
@@ -53,7 +66,7 @@ namespace LibraBoekenBeheerder.Controllers
                 {
                     var dto = _booksMapper.toClass(booksModel);
                     
-                    if (_booksClass.CreateBook(dto, selectedCollectionId, _configuration))
+                    if (_booksClass.CreateBook(dto, selectedCollectionId, selectedGenreId, _configuration))
                     {
                         ViewBag.Message = "Book succesfully created!";
                         ModelState.Clear();
@@ -86,6 +99,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration config = _configuration;
+                //Return collections book is part of
                 var collectionDropDownList = _collectionClass.ReturnCollectionsContaintingBook(id, config);
 
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
@@ -94,6 +108,16 @@ namespace LibraBoekenBeheerder.Controllers
                 }).ToList();
 
                 ViewBag.collectionDropDownList = items;
+                
+                //Return genres book has
+                var genreDropDownList = _genreClass.ReturnGenresFromBook(id, config);
+
+                List<SelectListItem> genres = genreDropDownList.Select(cddl => new SelectListItem
+                {
+                    Text = cddl.GenreName.ToString()
+                }).ToList();
+
+                ViewBag.genreDropDownList = genres;
 
                 var bookDto = _booksClass.GetABook(id, config);
 

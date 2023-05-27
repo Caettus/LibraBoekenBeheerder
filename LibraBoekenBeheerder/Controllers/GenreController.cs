@@ -74,5 +74,24 @@ namespace LibraBoekenBeheerder.Controllers
 
             return View(genreModel);
         }
+        
+        public ActionResult Delete(int id)
+        {
+                
+            if (genreClass.DeleteGenre(_config, id))
+            {
+                ViewBag.Message = "Genre succesfully deleted";
+                ModelState.Clear();
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine($"{error.ErrorMessage}");
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
