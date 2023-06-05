@@ -159,5 +159,26 @@ namespace LibraLogic
             }
             return false;
         }
+        
+        public bool DeleteCollection(IConfiguration configuration, int id)
+        {
+            try
+            {
+                ICollection Collection = DALFactory.GetCollectionDAL(configuration);
+                if (Collection.DeleteCollection(id))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Collection could not be deleted in logic: {e.Message}");
+            }
+            return false;
+        }
     }
 }

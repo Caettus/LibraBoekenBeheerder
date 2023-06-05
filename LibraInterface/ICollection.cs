@@ -17,5 +17,6 @@ namespace LibraInterface
         List<CollectionDTO> GetCollectionsContainingBook(int id);
         List<BooksDTO> GetBooksInCollection(int id);
         bool RemoveLinkBookFromCollection(int CollectionID, int BookId);
-     }
+        bool DeleteCollection(int id);
+    }
 }

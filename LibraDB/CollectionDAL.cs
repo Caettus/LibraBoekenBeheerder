@@ -45,11 +45,7 @@ public class CollectionDAL : ICollection
             collection.CollectionsID = Convert.ToInt32(dataReader["CollectionID"]);
             collection.Name = dataReader["Name"].ToString();
             mycollectionsList.Add(collection);
-
-            if (collection != null)
-            {
-                mycollectionsList.Add(collection);
-            }
+            
         }
         con.Close();
         return mycollectionsList;
@@ -205,5 +201,26 @@ public class CollectionDAL : ICollection
         }
         con.Close();
         return booksList;
+    }
+    
+    public bool DeleteCollection(int id) 
+    {
+        int i = 0;
+        connection();
+        try
+        {
+            SqlCommand cmd = new SqlCommand("DELETE FROM dbo.Collection WHERE CollectionID = @CollectionID", con);
+            cmd.Parameters.AddWithValue("@CollectionID", id);
+            cmd.CommandType = CommandType.Text;
+
+            con.Open();
+            i = cmd.ExecuteNonQuery();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Collection kan niet worden verwijderd in de DAL: {e.Message}");
+        }
+        finally { con.Close(); }
+        return i >= 1;
     }
 }

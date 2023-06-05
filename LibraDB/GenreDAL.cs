@@ -46,11 +46,6 @@ namespace LibraDB
                 genre.GenreId = Convert.ToInt32(dataReader["GenreId"]);
                 genre.GenreName = dataReader["GenreName"].ToString();
                 myGenreList.Add(genre);
-
-                if (genre != null)
-                {
-                    myGenreList.Add(genre);
-                }
             }
             con.Close();
             return myGenreList;

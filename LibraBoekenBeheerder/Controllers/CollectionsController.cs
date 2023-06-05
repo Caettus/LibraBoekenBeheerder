@@ -134,6 +134,25 @@ namespace LibraBoekenBeheerder.Controllers
             }
             return RedirectToAction("Index");
         }
+        
+        public ActionResult Delete(int id)
+        {
+                
+            if (_collectionClassClass.DeleteCollection(_configuration, id))
+            {
+                ViewBag.Message = "Collection succesfully deleted";
+                ModelState.Clear();
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine($"{error.ErrorMessage}");
+                }
+            }
+            return RedirectToAction("Index");
+        }
     } 
 }
 
