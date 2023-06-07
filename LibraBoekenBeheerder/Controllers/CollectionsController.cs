@@ -51,16 +51,21 @@ namespace LibraBoekenBeheerder.Controllers
             }
             return View(collectionsModels);
         }
+        
+        public ActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
-        public ActionResult Create(CollectionsModel collectionsModel, IConfiguration configuration)
+        public ActionResult Create(CollectionsModel collectionsModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var _dto = _collectionsMapper.toClass(collectionsModel);
-                    if (_collectionClassClass.CreateCollection(_dto, configuration))
+                    if (_collectionClassClass.CreateCollection(_dto, _configuration))
                     {
                         ViewBag.Message = "CollectionClass has been added succesfully";
                         ModelState.Clear();
