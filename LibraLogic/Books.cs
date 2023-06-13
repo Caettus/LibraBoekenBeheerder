@@ -25,6 +25,17 @@ public class Books
 
 
     BooksMapper _booksMapper = new BooksMapper();
+    private readonly IBooks _books;
+
+    public Books()
+    {
+        
+    }
+
+    public Books(IBooks books)
+    {
+        _books = books;
+    }
 
     public bool CreateBook(Books booksClass, int selectedCollectionId, int selectedGenreId, IConfiguration configuration)
     {

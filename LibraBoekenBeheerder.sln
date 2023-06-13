@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraFactory", "LibraFactor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraInterface", "LibraInterface\LibraInterface.csproj", "{5EB489B2-067D-4200-AAC8-DD5A8A8D8CF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraTest", "LibraTest\LibraTest.csproj", "{504FD02D-4B4C-4A26-AE87-5976C0ACD346}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5EB489B2-067D-4200-AAC8-DD5A8A8D8CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB489B2-067D-4200-AAC8-DD5A8A8D8CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EB489B2-067D-4200-AAC8-DD5A8A8D8CF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{504FD02D-4B4C-4A26-AE87-5976C0ACD346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{504FD02D-4B4C-4A26-AE87-5976C0ACD346}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{504FD02D-4B4C-4A26-AE87-5976C0ACD346}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{504FD02D-4B4C-4A26-AE87-5976C0ACD346}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

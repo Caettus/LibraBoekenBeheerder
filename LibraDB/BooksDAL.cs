@@ -84,25 +84,34 @@ public class BooksDAL : IBooks
 
     public bool CreateBook(BooksDTO booksDTO)
     {
-        connection();
-        SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead);", con);
-        cmd.CommandType = CommandType.Text;
+        try
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Books] ([Title], [Author], [ISBNNumber], [Summary], [Pages], [PagesRead]) VALUES (@Title, @Author, @ISBNNumber, @Summary, @Pages, @PagesRead);", con);
+            cmd.CommandType = CommandType.Text;
 
-        cmd.Parameters.AddWithValue("@Title", booksDTO.Title);
-        cmd.Parameters.AddWithValue("@Author", booksDTO.Author);
-        cmd.Parameters.AddWithValue("@ISBNNumber", booksDTO.ISBNNumber);
-        cmd.Parameters.AddWithValue("@Summary", booksDTO.Summary);
-        cmd.Parameters.AddWithValue("@Pages", booksDTO.Pages);
-        cmd.Parameters.AddWithValue("@PagesRead", booksDTO.PagesRead);
+            cmd.Parameters.AddWithValue("@Title", booksDTO.Title);
+            cmd.Parameters.AddWithValue("@Author", booksDTO.Author);
+            cmd.Parameters.AddWithValue("@ISBNNumber", booksDTO.ISBNNumber);
+            cmd.Parameters.AddWithValue("@Summary", booksDTO.Summary);
+            cmd.Parameters.AddWithValue("@Pages", booksDTO.Pages);
+            cmd.Parameters.AddWithValue("@PagesRead", booksDTO.PagesRead);
 
-        con.Open();
-        var i = cmd.ExecuteNonQuery();
-        con.Close();
+            con.Open();
+            var i = cmd.ExecuteNonQuery();
+            con.Close();
 
-        if (i >= 1)
-            return true;
-        else
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
             return false;
+        }
+        
     }
 
     public bool EditBook(BooksDTO booksDTO, int id)
