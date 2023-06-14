@@ -18,29 +18,32 @@ namespace LibraLogic
         public string Name { get; set; }
 
         CollectionMapper _collectionMapper = new CollectionMapper();
-        BooksMapper _booksMapper = new BooksMapper();   
-
-        public List<CollectionClass> ReturnAllCollections(IConfiguration configuration)
+    
+        private readonly IConfiguration _configuration;
+        BooksMapper _booksMapper = new BooksMapper();
+        private readonly IBooks _book;
+        private readonly ICollection _collection;
+        private readonly IGenre _genre;   
+        
+        public CollectionClass(IBooks books, ICollection collection, IGenre genre)
         {
-            try
-            {
-                ICollection getAllCollections = DALFactory.GetCollectionDAL(configuration);
-
-                List<CollectionDTO> returnCollectionDtoList = getAllCollections.GetAllCollections();
-
-                List<CollectionClass> returnCollectionList =
-                    returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
-
-                return returnCollectionList;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Could not return all collections: {e.Message}");
-            }
-
-            return new List<CollectionClass>();
+            _book = books;
+            _collection = collection;
+            _genre = genre;
         }
-
+        
+        public CollectionClass(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            _book = DALFactory.GetBooksDAL(configuration);
+            _collection = DALFactory.GetCollectionDAL(configuration);
+            _genre = DALFactory.GetGenreDAL(configuration);
+        }
+        
+        public CollectionClass()
+        {
+            
+        }
 
         public CollectionClass ReturnACollection(IConfiguration configuration, int id)
         {
@@ -63,34 +66,11 @@ namespace LibraLogic
             return null;
         }
 
-
-        public List<CollectionClass> ReturnCollectionsNotContaintingBook(int id, IConfiguration configuration)
-        {
-            try
-            {
-                ICollection getCollections = DALFactory.GetCollectionDAL(configuration);
-
-                List<CollectionDTO> returnCollectionDtoList = getCollections.GetCollectionsNotContainingBook(id);
-
-                List<CollectionClass> returnCollectionList =
-                    returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
-
-                return returnCollectionList;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Could not return collections: {e.Message}");
-            }
-
-            return new List<CollectionClass>();
-        }
-
         public List<Books> ReturnBooksInCollection(int id, IConfiguration configuration)
         {
             try
             {
-                ICollection getBooksinCollection = DALFactory.GetCollectionDAL(configuration);
-                List<BooksDTO> returnBooksDtoList = getBooksinCollection.GetBooksInCollection(id);
+                List<BooksDTO> returnBooksDtoList = _collection.GetBooksInCollection(id);
                 List<Books> returnBooksList = 
                     returnBooksDtoList.Select(_booksMapper.toClass).ToList();
 
@@ -103,52 +83,11 @@ namespace LibraLogic
             return new List<Books>();
         }
 
-        public List<CollectionClass> ReturnCollectionsContaintingBook(int id, IConfiguration configuration)
-        {
-            try
-            {
-                ICollection getCollections = DALFactory.GetCollectionDAL(configuration);
-
-                List<CollectionDTO> returnCollectionDtoList = getCollections.GetCollectionsContainingBook(id);
-
-                List<CollectionClass> returnCollectionList =
-                    returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
-
-                return returnCollectionList;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Could not return collections: {e.Message}");
-            }
-
-            return new List<CollectionClass>();
-        }
-
-        public bool CreateCollection(CollectionClass collectionClass, IConfiguration configuration)
-        {
-            ICollection createCollection = DALFactory.GetCollectionDAL(configuration);
-            var collectionDTO = _collectionMapper.toDTO(collectionClass);
-            try
-            {
-                if (createCollection.CreateCollection(collectionDTO))
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"CollectionClass could not be created: {e.Message}");
-            }
-
-            return false;
-        }
-
         public bool RemoveLinkBookToCollection(int CollectionID, int BookId, IConfiguration configuration)
         {
-            ICollection collectionDAL = DALFactory.GetCollectionDAL(configuration);
             try
             {
-                if (collectionDAL.RemoveLinkBookFromCollection(CollectionID, BookId))
+                if (_collection.RemoveLinkBookFromCollection(CollectionID, BookId))
                 {
                     return true;
                 }
@@ -164,8 +103,7 @@ namespace LibraLogic
         {
             try
             {
-                ICollection Collection = DALFactory.GetCollectionDAL(configuration);
-                if (Collection.DeleteCollection(id))
+                if (_collection.DeleteCollection(id))
                 {
                     return true;
                 }

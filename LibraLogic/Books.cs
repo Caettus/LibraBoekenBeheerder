@@ -9,6 +9,7 @@ namespace LibraLogic;
 
 public class Books
 {
+    #region Properties
     public int BookId { get; set; }
 
     public string Title { get; set; }
@@ -22,73 +23,41 @@ public class Books
     public int? PagesRead { get; set; }
 
     public string? Summary { get; set; }
+    #endregion
 
-
+    #region Constructors
     BooksMapper _booksMapper = new BooksMapper();
     private readonly IBooks _books;
+    private readonly ICollection _collection;
+    private readonly IGenre _genre;
+    private readonly IConfiguration _configuration;
 
+    
+    public Books(IConfiguration configuration)
+    {
+        _configuration = configuration;
+        _books = DALFactory.GetBooksDAL(configuration);
+        _collection = DALFactory.GetCollectionDAL(configuration);
+        _genre = DALFactory.GetGenreDAL(configuration);
+    }
+
+    public Books(IBooks books, ICollection collection, IGenre genre)
+    {
+        _books = books;
+        _collection = collection;
+        _genre = genre;
+    }
     public Books()
     {
         
     }
-
-    public Books(IBooks books)
-    {
-        _books = books;
-    }
-
-    public bool CreateBook(Books booksClass, int selectedCollectionId, int selectedGenreId, IConfiguration configuration)
+    #endregion
+    
+    public bool DeleteBook(int id)
     {
         try
         {
-            IBooks Book = DALFactory.GetBooksDAL(configuration);
-            var dto = _booksMapper.toDTO(booksClass);
-
-
-            if (Book.CreateBook(dto))
-            {
-                int bookId = Book.GetLastInsertedBookId();
-
-                //boek aan collectie toevoegen
-                ICollection collectionBooksLink = DALFactory.GetCollectionDAL(configuration);
-                CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
-                collectionBooksDTO.CollectionID = selectedCollectionId;
-                collectionBooksDTO.BookId = bookId;
-                
-                if (collectionBooksLink.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
-                {
-                    //genre aan boek toevoegen
-                    IGenre booksGenreLink = DALFactory.GetGenreDAL(configuration);
-                    BookGenresDTO bookGenresDTO = new BookGenresDTO();
-                    bookGenresDTO.GenreId = selectedGenreId;
-                    bookGenresDTO.BookId = bookId;
-                    if (booksGenreLink.LinkGenreToBook(selectedGenreId, selectedCollectionId, bookGenresDTO))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("LinkGenreToBook check kon niet worden gepassed in de logic");
-                    }
-                }
-                //iedereen blij
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Oopsie woopsie! Something went wrong: {ex.Message}");
-            return false;
-        }
-
-        return false;
-    }
-
-    public bool DeleteBook(IConfiguration configuration, int id)
-    {
-        try
-        {
-            IBooks Book = DALFactory.GetBooksDAL(configuration);
-            if (Book.DeleteBook(id))
+            if (_books.DeleteBook(id))
             {
                 return true;
             }
@@ -104,23 +73,21 @@ public class Books
         return false;
     }
 
-    public bool EditBook(Books booksClass, int? selectedCollectionId, int bookId, IConfiguration configuration)
+    public bool EditBook(Books booksClass, int? selectedCollectionId, int bookId)
     {
         try
         {
-            IBooks editBook = DALFactory.GetBooksDAL(configuration);
             var dto = _booksMapper.toDTO(booksClass);
 
-            if (editBook.EditBook(dto, bookId))
+            if (_books.EditBook(dto, bookId))
             {
                 if (selectedCollectionId.HasValue)
                 {
-                    ICollection collectionBooksLink = DALFactory.GetCollectionDAL(configuration);
                     CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
                     collectionBooksDTO.CollectionID = selectedCollectionId.Value;
                     collectionBooksDTO.BookId = bookId;
 
-                    return collectionBooksLink.LinkBookToCollection(selectedCollectionId.Value, bookId, collectionBooksDTO);
+                    return _collection.LinkBookToCollection(selectedCollectionId.Value, bookId, collectionBooksDTO);
                 }
                 else
                 {
@@ -134,15 +101,12 @@ public class Books
         }
         return false;
     }
-
-
-
-    public Books GetABook(int id, IConfiguration configuration)
+    
+    public Books GetABook(int id)
     {
         try
         {
-            IBooks getABook = DALFactory.GetBooksDAL(configuration);
-            BooksDTO dto = getABook.GetABook(id);
+            BooksDTO dto = _books.GetABook(id);
 
             if (dto != null)
             {
@@ -157,22 +121,5 @@ public class Books
         return null;
     }
 
-    public List<Books> ReturnAllBooks(IConfiguration configuration) 
-    {
-        try
-        {
-            IBooks getAllBooks = DALFactory.GetBooksDAL(configuration);
-
-            List<BooksDTO> returnBooksDtoList = getAllBooks.GetAllBooks();
-
-            List<Books> returnBooksList = returnBooksDtoList.Select(_booksMapper.toClass).ToList();
-
-            return returnBooksList;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"ReturnAllBooks werkt niet: {e.Message}");
-        }
-        return new List<Books> { };
-    }
+    
 }

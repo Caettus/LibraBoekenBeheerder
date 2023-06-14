@@ -10,11 +10,12 @@ namespace LibraBoekenBeheerder.Controllers
     {
         private readonly GenreMapper _genreMapper;
         private readonly Genre genreClass;
+        private readonly GenreService _genreService;
         private readonly IConfiguration _config;
         public GenreController(IConfiguration configuration)
         {
             _genreMapper = new GenreMapper();
-            genreClass = new Genre();
+            genreClass = new Genre(configuration);
             _config = configuration;
         }
 
@@ -26,7 +27,7 @@ namespace LibraBoekenBeheerder.Controllers
 
             List<GenreModel> genreModels = new List<GenreModel>();
 
-            var dtoList = genreClass.ReturnAllGenres(_config);
+            var dtoList = _genreService.ReturnAllGenres(_config);
             foreach (var dtoItem in dtoList)
             {
                 var modelItem = _genreMapper.toModel(dtoItem);
@@ -48,7 +49,7 @@ namespace LibraBoekenBeheerder.Controllers
                 {
                     var genre = _genreMapper.toClass(genreModel);
 
-                    if (genreClass.CreateGenre(genre, _config))
+                    if (_genreService.CreateGenre(genre, _config))
                     {
                         ViewBag.Message = "Genre succesfully created!";
                         ModelState.Clear();
@@ -78,7 +79,7 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Delete(int id)
         {
                 
-            if (genreClass.DeleteGenre(_config, id))
+            if (genreClass.DeleteGenre(id))
             {
                 ViewBag.Message = "Genre succesfully deleted";
                 ModelState.Clear();

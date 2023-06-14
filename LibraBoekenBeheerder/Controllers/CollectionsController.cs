@@ -18,13 +18,15 @@ namespace LibraBoekenBeheerder.Controllers
         private readonly Books _booksClass;
         private readonly IConfiguration _configuration;
         private readonly CollectionsMapper _collectionsMapper;
+        private readonly CollectionService _collectionService;
 
         public CollectionsController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _collectionClassClass = new CollectionClass();
-            _booksClass = new Books();
+            _collectionClassClass = new CollectionClass(configuration);
+            _booksClass = new Books(configuration);
             _collectionsMapper = new CollectionsMapper();
+            _collectionService = new CollectionService(configuration);
         }
 
         [HttpGet]
@@ -36,7 +38,7 @@ namespace LibraBoekenBeheerder.Controllers
 
             List<CollectionsModel> collectionsModels = new List<CollectionsModel>();
 
-            var dtoList = _collectionClassClass.ReturnAllCollections(_configuration);
+            var dtoList = _collectionService.ReturnAllCollections(_configuration);
             foreach (var dtoItem in dtoList)
             {
                 var modelItem = _collectionsMapper.toModel(dtoItem);
@@ -65,7 +67,7 @@ namespace LibraBoekenBeheerder.Controllers
                 if (ModelState.IsValid)
                 {
                     var _dto = _collectionsMapper.toClass(collectionsModel);
-                    if (_collectionClassClass.CreateCollection(_dto, _configuration))
+                    if (_collectionService.CreateCollection(_dto, _configuration))
                     {
                         ViewBag.Message = "CollectionClass has been added succesfully";
                         ModelState.Clear();
