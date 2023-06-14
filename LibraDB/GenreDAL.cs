@@ -132,5 +132,50 @@ namespace LibraDB
             con.Close();
             return genreList;
         }
+        
+        public List<BooksDTO> GetBooksInGenre(int id)
+        {
+            List<BooksDTO> booksList = new List<BooksDTO>();
+            connection();
+            SqlCommand cmd = new SqlCommand(
+                "SELECT b.BookId, b.Title " +
+                "FROM Books b " +
+                "LEFT JOIN BookGenres bg ON b.BookId = bg.BookId AND bg.GenreId = @GenreId " +
+                "WHERE bg.GenreId = @GenreId", con);
+            cmd.Parameters.AddWithValue("@GenreId", id);
+            cmd.CommandType= CommandType.Text;
+            con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                var book = new BooksDTO();
+
+                book.BookId = Convert.ToInt32(rdr["BookId"]);
+                book.Title = rdr["Title"].ToString();
+                booksList.Add(book);
+            }
+            con.Close();
+            return booksList;
+        }
+        
+        public GenreDTO GetAGenre(int id)
+        {
+            connection();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM dbo.Genre WHERE GenreId = @id", con);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.CommandType = CommandType.Text;
+            con.Open();
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+            GenreDTO genre = null;
+            if (rdr.Read())
+            {
+                genre = new GenreDTO();
+                genre.GenreId = Convert.ToInt32(rdr["GenreId"]);
+                genre.GenreName = rdr["GenreName"].ToString();
+            }
+            con.Close();
+            return genre;
+        }
     }
 }

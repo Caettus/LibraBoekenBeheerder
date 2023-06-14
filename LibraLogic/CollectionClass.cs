@@ -49,8 +49,7 @@ namespace LibraLogic
         {
             try
             {
-                ICollection getACollection = DALFactory.GetCollectionDAL(configuration);
-                CollectionDTO dto = getACollection.GetACollection(id);
+                CollectionDTO dto = _collection.GetACollection(id);
         
                 if (dto != null)
                 {

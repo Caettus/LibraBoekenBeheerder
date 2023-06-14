@@ -83,4 +83,33 @@ public class GenreTest
         // Assert
         Assert.IsTrue(result);
     }
+    
+    [TestMethod]
+    public void GetBooksInGenreTest()
+    {
+        // Arrange
+        
+        IGenre genreDALMock = new TestGenreDAL();
+        Genre genreClass = new Genre(genreDALMock);
+        
+        // Act
+        List<Books> result = genreClass.ReturnBooksInGenre(1);
+
+        // Assert
+        Assert.AreEqual(2, result.Count);
+    }
+
+    [TestMethod]
+    public void GetAGenreTest()
+    {
+        // Arrange
+        IGenre genreDALMock = new TestGenreDAL();
+        Genre genreClass = new Genre(genreDALMock);
+        
+        // Act
+        Genre result = genreClass.ReturnAGenre(1);
+        
+        // Assert
+        Assert.AreEqual(1, result.GenreId);
+    }
 }

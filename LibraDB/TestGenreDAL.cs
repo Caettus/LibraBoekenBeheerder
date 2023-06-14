@@ -51,4 +51,42 @@ public class TestGenreDAL : IGenre
     {
         return true;
     }
+    
+    public List<BooksDTO> GetBooksInGenre(int id)
+    {
+        BooksDTO booksDto = new BooksDTO();
+        {
+            booksDto.BookId = 1;
+            booksDto.Title = "Test Book";
+            booksDto.Author = "Test Author";
+            booksDto.ISBNNumber = "Test ISBNNumber";
+            booksDto.Pages = 1;
+            booksDto.PagesRead = 1;
+            booksDto.Summary = "Test Summary";
+        }
+        BooksDTO booksDto2 = new BooksDTO();
+        {
+            booksDto.BookId = 2;
+            booksDto.Title = "Test Book2";
+            booksDto.Author = "Test Author2";
+            booksDto.ISBNNumber = "Test ISBNNumber2";
+            booksDto.Pages = 2;
+            booksDto.PagesRead = 2;
+            booksDto.Summary = "Test Summary2";
+        }
+        List<BooksDTO> books = new List<BooksDTO>();
+        books.Add(booksDto);
+        books.Add(booksDto2);
+        return books;
+    }
+    
+    public GenreDTO GetAGenre(int id)
+    {
+        GenreDTO genreDto = new GenreDTO();
+        {
+            genreDto.GenreId = 1;
+            genreDto.GenreName = "Test Genre";
+        }
+        return genreDto;
+    }
 }

@@ -18,6 +18,8 @@ namespace LibraLogic
 
         private readonly IConfiguration _configuration;
         private readonly IGenre _genre;
+        private readonly GenreMapper _genreMapper = new GenreMapper();
+        private readonly BooksMapper _booksMapper = new BooksMapper();
     
         public Genre(IConfiguration configuration)
         {
@@ -56,6 +58,41 @@ namespace LibraLogic
             return false;
         }
         
+        public List<Books> ReturnBooksInGenre(int id)
+        {
+            try
+            {
+                List<BooksDTO> returnBooksDtoList = _genre.GetBooksInGenre(id);
+                List<Books> returnBooksList = 
+                    returnBooksDtoList.Select(_booksMapper.toClass).ToList();
+
+                return returnBooksList;
+            }
+            catch (Exception e )
+            {
+                Console.WriteLine($"Could not return books in CollectionClass.cs: {e.Message}");
+            }
+            return new List<Books>();
+        }
         
+        public Genre ReturnAGenre(int id)
+        {
+            try
+            {
+                GenreDTO dto = _genre.GetAGenre(id);
+        
+                if (dto != null)
+                {
+                    Genre genreClass = _genreMapper.toClass(dto);
+                    return genreClass;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Genre kon niet worden opgehaald :) : {e.Message}");
+            }
+        
+            return null;
+        }
     }
 }

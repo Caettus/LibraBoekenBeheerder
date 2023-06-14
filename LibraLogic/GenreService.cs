@@ -33,7 +33,6 @@ public class GenreService
     {
         try
         {
-
             List<GenreDTO> returnGenreDtoList = _genre.GetAllGenres();
 
             List<Genre> returnGenresList = returnGenreDtoList.Select(_genreMapper.toClass).ToList();
