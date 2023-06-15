@@ -3,7 +3,7 @@ using LibraInterface;
 
 namespace LibraDB;
 
-public class TestCollectionDAL : ICollection
+public class TestCollectionDAL : ICollection, ICollectionService
 {
     public bool LinkBookToCollection(int CollectionID, int BookID, CollectionBooksDTO collectionBooksDTO)
     {

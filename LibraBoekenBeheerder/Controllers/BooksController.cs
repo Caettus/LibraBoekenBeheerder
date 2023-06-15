@@ -63,8 +63,7 @@ namespace LibraBoekenBeheerder.Controllers
             ViewBag.genreDropDownList = genres;
             return View();
         }
-    
-    
+        
         [HttpPost]
         public ActionResult Create(BooksModel booksModel, int selectedCollectionId, int selectedGenreId)
         {
@@ -72,11 +71,17 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (string.IsNullOrEmpty(booksModel.Title))
+                    {
+                        ModelState.AddModelError("Title", "Title is required.");
+                        return View(booksModel);
+                    }
+
                     var modelToClass = _booksMapper.toClass(booksModel);
-                    
+
                     if (_booksCollection.CreateBook(modelToClass, selectedCollectionId, selectedGenreId))
                     {
-                        ViewBag.Message = "Book succesfully created!";
+                        ViewBag.Message = "Book successfully created!";
                         ModelState.Clear();
                     }
                     else
@@ -95,11 +100,12 @@ namespace LibraBoekenBeheerder.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Error = $"Error occured while creating the book: {e.Message}";
+                ViewBag.Error = $"Error occurred while creating the book: {e.Message}";
             }
 
             return View(booksModel);
         }
+
 
         [HttpGet]
         public ActionResult Details(int id)
@@ -150,7 +156,7 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Index(string searchString)
         {
             var configuration = HttpContext.RequestServices.GetService<IConfiguration>();
-            var returnBooksList = _booksCollection.ReturnAllBooks(_configuration);
+            var returnBooksList = _booksCollection.ReturnAllBooks();
             
             //Return list of books
             var booksList = new List<BooksModel>();

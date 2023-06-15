@@ -11,7 +11,7 @@ using System.Data;
 
 namespace LibraDB
 {
-    public class GenreDAL : IGenre
+    public class GenreDAL : IGenre, IGenreService
     {
         private readonly IConfiguration _configuration;
 

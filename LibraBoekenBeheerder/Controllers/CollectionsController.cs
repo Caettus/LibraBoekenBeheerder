@@ -67,7 +67,7 @@ namespace LibraBoekenBeheerder.Controllers
                 if (ModelState.IsValid)
                 {
                     var _dto = _collectionsMapper.toClass(collectionsModel);
-                    if (_collectionService.CreateCollection(_dto, _configuration))
+                    if (_collectionService.CreateCollection(_dto))
                     {
                         ViewBag.Message = "CollectionClass has been added succesfully";
                         ModelState.Clear();

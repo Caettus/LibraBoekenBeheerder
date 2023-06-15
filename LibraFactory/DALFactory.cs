@@ -15,6 +15,11 @@ namespace LibraFactory
             return new BooksDAL(configuration);
         }
         
+        public static IBooksCollection GetBooksDALForCollection(IConfiguration configuration)
+        {
+            return new BooksDAL(configuration);
+        }
+        
         public static ICollection GetCollectionDAL(IConfiguration configuration)
         {
             return new CollectionDAL(configuration);

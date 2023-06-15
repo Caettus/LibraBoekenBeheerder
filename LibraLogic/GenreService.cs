@@ -13,6 +13,7 @@ public class GenreService
     private readonly IBooks _book;
     private readonly ICollection _collection;
     private readonly IGenre _genre;
+    private readonly IGenreService _genreService;
     
     public GenreService(IConfiguration configuration)
     {
@@ -33,7 +34,7 @@ public class GenreService
     {
         try
         {
-            List<GenreDTO> returnGenreDtoList = _genre.GetAllGenres();
+            List<GenreDTO> returnGenreDtoList = _genreService.GetAllGenres();
 
             List<Genre> returnGenresList = returnGenreDtoList.Select(_genreMapper.toClass).ToList();
 
@@ -51,7 +52,7 @@ public class GenreService
         var genreDTO = _genreMapper.toDTO(genreClass);
         try
         {
-            if (_genre.CreateGenre(genreDTO))
+            if (_genreService.CreateGenre(genreDTO))
             {
                 return true;
             }

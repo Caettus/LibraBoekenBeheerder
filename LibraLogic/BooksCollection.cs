@@ -12,23 +12,25 @@ public class BooksCollection
     #region Constructors
     private readonly IConfiguration _configuration;
     BooksMapper _booksMapper = new BooksMapper();
-    private readonly IBooks _book;
     private readonly ICollection _collection;
     private readonly IGenre _genre;
+    private readonly IBooksCollection _booksCollection;
+    private readonly IBooks _books;
     
     
     
     public BooksCollection(IConfiguration configuration)
     {
         _configuration = configuration;
-        _book = DALFactory.GetBooksDAL(configuration);
         _collection = DALFactory.GetCollectionDAL(configuration);
         _genre = DALFactory.GetGenreDAL(configuration);
+        _booksCollection = DALFactory.GetBooksDALForCollection(configuration);
+        _books = DALFactory.GetBooksDAL(configuration);
     }
     
-    public BooksCollection(IBooks books, ICollection collection, IGenre genre)
+    public BooksCollection(IBooksCollection booksCollection, ICollection collection, IGenre genre)
     {
-        _book = books;
+        _booksCollection = booksCollection;
         _collection = collection;
         _genre = genre;
     }
@@ -41,9 +43,9 @@ public class BooksCollection
             var toDto = _booksMapper.toDTO(booksClass);
 
 
-            if (_book.CreateBook(toDto))
+            if (_booksCollection.CreateBook(toDto))
             {
-                int bookId = _book.GetLastInsertedBookId();
+                int bookId = _books.GetLastInsertedBookId();
 
                 //boek aan collectie toevoegen
                 CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
@@ -78,12 +80,12 @@ public class BooksCollection
     }
     
     
-    public List<Books> ReturnAllBooks(IConfiguration configuration) 
+    public List<Books> ReturnAllBooks() 
     {
         try
         {
 
-            List<BooksDTO> returnBooksDtoList = _book.GetAllBooks();
+            List<BooksDTO> returnBooksDtoList = _booksCollection.GetAllBooks();
 
             List<Books> returnBooksList = returnBooksDtoList.Select(_booksMapper.toClass).ToList();
 

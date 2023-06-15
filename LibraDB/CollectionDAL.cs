@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace LibraDB;
 
-public class CollectionDAL : ICollection
+public class CollectionDAL : ICollection, ICollectionService
 {
 
     #region configuratie

@@ -3,7 +3,7 @@ using LibraInterface;
 
 namespace LibraDB;
 
-public class TestGenreDAL : IGenre
+public class TestGenreDAL : IGenre, IGenreService
 {
     public bool CreateGenre(GenreDTO genreDto)
     {

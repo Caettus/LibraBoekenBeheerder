@@ -11,11 +11,11 @@ public class CollectionService
     CollectionMapper _collectionMapper = new CollectionMapper();
     
     private readonly IConfiguration _configuration;
-    BooksMapper _booksMapper = new BooksMapper();
     private readonly IBooks _book;
     private readonly ICollection _collection;
     private readonly IGenre _genre;
-    
+    private readonly ICollectionService _collectionService;
+
     public CollectionService(IConfiguration configuration)
     {
         _configuration = configuration;
@@ -31,12 +31,12 @@ public class CollectionService
         _genre = genre;
     }
     
-    public bool CreateCollection(CollectionClass collectionClass, IConfiguration configuration)
+    public bool CreateCollection(CollectionClass collectionClass)
     {
         var collectionDTO = _collectionMapper.toDTO(collectionClass);
         try
         {
-            if (_collection.CreateCollection(collectionDTO))
+            if (_collectionService.CreateCollection(collectionDTO))
             {
                 return true;
             }
@@ -54,7 +54,7 @@ public class CollectionService
         try
         {
 
-            List<CollectionDTO> returnCollectionDtoList = _collection.GetAllCollections();
+            List<CollectionDTO> returnCollectionDtoList = _collectionService.GetAllCollections();
 
             List<CollectionClass> returnCollectionList =
                 returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
@@ -74,7 +74,7 @@ public class CollectionService
         try
         {
 
-            List<CollectionDTO> returnCollectionDtoList = _collection.GetCollectionsContainingBook(id);
+            List<CollectionDTO> returnCollectionDtoList = _collectionService.GetCollectionsContainingBook(id);
 
             List<CollectionClass> returnCollectionList =
                 returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();
@@ -94,7 +94,7 @@ public class CollectionService
         try
         {
 
-            List<CollectionDTO> returnCollectionDtoList = _collection.GetCollectionsNotContainingBook(id);
+            List<CollectionDTO> returnCollectionDtoList = _collectionService.GetCollectionsNotContainingBook(id);
 
             List<CollectionClass> returnCollectionList =
                 returnCollectionDtoList.Select(_collectionMapper.toClass).ToList();

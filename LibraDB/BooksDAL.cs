@@ -7,7 +7,7 @@ using LibraInterface;
 
 namespace LibraDBWW;
 
-public class BooksDAL : IBooks
+public class BooksDAL : IBooks, IBooksCollection
 {
     private readonly IConfiguration _configuration;
 

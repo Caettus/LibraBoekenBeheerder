@@ -3,7 +3,7 @@ using LibraInterface;
 
 namespace LibraDB;
 
-public class TestBooksDAL : IBooks
+public class TestBooksDAL : IBooks, IBooksCollection
 {
     public bool CreateBook(BooksDTO booksDto)
     {

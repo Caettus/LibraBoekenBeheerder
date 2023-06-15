@@ -5,10 +5,9 @@ namespace LibraInterface;
 
 public interface IBooks
 {
-    bool CreateBook(BooksDTO booksDTO);
+    
     bool EditBook(BooksDTO booksDto, int id);
     int GetLastInsertedBookId();
-    List<BooksDTO> GetAllBooks();
     BooksDTO GetABook(int id);
     bool DeleteBook(int id);
 }

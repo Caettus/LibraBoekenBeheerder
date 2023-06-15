@@ -26,7 +26,7 @@ public class CollectionTest
         }
 
         // Act
-        bool result = collectionService.CreateCollection(collectionClassMockData, configuration);
+        bool result = collectionService.CreateCollection(collectionClassMockData);
 
         // Assert
         Assert.IsTrue(result);
