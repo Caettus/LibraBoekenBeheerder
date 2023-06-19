@@ -10,23 +10,17 @@ public class CollectionService
 {
     CollectionMapper _collectionMapper = new CollectionMapper();
     
-    private readonly IConfiguration _configuration;
-    private readonly IBooks _book;
-    private readonly IGenre _genre;
     private readonly ICollectionService _collectionService;
+    private readonly IConfiguration _configuration;
 
     public CollectionService(IConfiguration configuration)
     {
         _configuration = configuration;
-        _book = DALFactory.GetBooksDAL(configuration);
-        _genre = DALFactory.GetGenreDAL(configuration);
         _collectionService = DALFactory.GetCollectionServiceDAL(configuration);
     }
     
-    public CollectionService(IBooks books, IGenre genre, ICollectionService collectionService)
+    public CollectionService(ICollectionService collectionService)
     {
-        _book = books;
-        _genre = genre;
         _collectionService = collectionService;
     }
     

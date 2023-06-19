@@ -12,14 +12,11 @@ public class CollectionTest
     public void CreateCollectionTest()
     {
         // Arrange
-        
-        IBooks booksDALMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
-        IGenre genreDALMock = new TestGenreDAL();
         ICollectionService collectionServiceDALMock = new TestCollectionDAL();
-        CollectionService collectionService = new CollectionService(booksDALMock, genreDALMock,  collectionServiceDALMock);
+        CollectionService collectionService = new CollectionService(collectionServiceDALMock);
         
-        CollectionClass collectionClassMockData = new CollectionClass(booksDALMock, collectionDALMock, genreDALMock);
+        CollectionClass collectionClassMockData = new CollectionClass(collectionDALMock);
         {
             collectionClassMockData.CollectionsID = 1;
             collectionClassMockData.Name = "TestCollectionName";
@@ -36,14 +33,11 @@ public class CollectionTest
     public void CreateCollectionTest_Fails()
     {
         // Arrange
-        
-        IBooks booksDALMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
-        IGenre genreDALMock = new TestGenreDAL();
         ICollectionService collectionServiceDALMock = new TestCollectionDAL();
-        CollectionService collectionService = new CollectionService(booksDALMock, genreDALMock,  collectionServiceDALMock);
+        CollectionService collectionService = new CollectionService(collectionServiceDALMock);
         
-        CollectionClass collectionClassMockData = new CollectionClass(booksDALMock, collectionDALMock, genreDALMock);
+        CollectionClass collectionClassMockData = new CollectionClass(collectionDALMock);
         {
             collectionClassMockData.CollectionsID = 1;
             collectionClassMockData.Name = " ";
@@ -60,11 +54,8 @@ public class CollectionTest
     public void GetAllCollectionsTest()
     {
         // Arrange
-        
-        IBooks booksDALMock = new TestBooksDAL();
-        IGenre genreDALMock = new TestGenreDAL();
         ICollectionService collectionServiceDALMock = new TestCollectionDAL();
-        CollectionService collectionService = new CollectionService(booksDALMock, genreDALMock,  collectionServiceDALMock);
+        CollectionService collectionService = new CollectionService(collectionServiceDALMock);
         
         // Act
         List<CollectionClass> result = collectionService.ReturnAllCollections();
@@ -77,11 +68,8 @@ public class CollectionTest
     public void GetCollectionsContainingBookTest()
     {
         // Arrange
-        
-        IBooks booksDALMock = new TestBooksDAL();
-        IGenre genreDALMock = new TestGenreDAL();
         ICollectionService collectionServiceDALMock = new TestCollectionDAL();
-        CollectionService collectionService = new CollectionService(booksDALMock, genreDALMock,  collectionServiceDALMock);
+        CollectionService collectionService = new CollectionService(collectionServiceDALMock);
         
         // Act
         List<CollectionClass> result = collectionService.ReturnCollectionsContaintingBook(1);
@@ -94,11 +82,8 @@ public class CollectionTest
     public void GetCollectionsNotContainingBookTest()
     {
         // Arrange
-        
-        IBooks booksDALMock = new TestBooksDAL();
-        IGenre genreDALMock = new TestGenreDAL();
         ICollectionService collectionServiceDALMock = new TestCollectionDAL();
-        CollectionService collectionService = new CollectionService(booksDALMock, genreDALMock,  collectionServiceDALMock);
+        CollectionService collectionService = new CollectionService(collectionServiceDALMock);
         
         // Act
         List<CollectionClass> result = collectionService.ReturnCollectionsNotContaintingBook(1);
@@ -111,11 +96,8 @@ public class CollectionTest
     public void ReturnACollectionTest()
     {
         // Arrange
-        
-        IBooks booksDALMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
-        IGenre genreDALMock = new TestGenreDAL();
-        CollectionClass collectionClass = new CollectionClass(booksDALMock, collectionDALMock, genreDALMock);
+        CollectionClass collectionClass = new CollectionClass(collectionDALMock);
         
         // Act
         CollectionClass result = collectionClass.ReturnACollection(1);
@@ -128,10 +110,8 @@ public class CollectionTest
     public void RemoveLinkBookToCollectionTest()
     {
         // Arrange
-        IBooks booksDALMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
-        IGenre genreDALMock = new TestGenreDAL();
-        CollectionClass collectionClass = new CollectionClass(booksDALMock, collectionDALMock, genreDALMock);
+        CollectionClass collectionClass = new CollectionClass(collectionDALMock);
         
         // Act
         bool result = collectionClass.RemoveLinkBookToCollection(1, 1);
@@ -144,10 +124,8 @@ public class CollectionTest
     public void ReturnBooksInCollectionTest()
     {
         // Arrange
-        IBooks booksDALMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
-        IGenre genreDALMock = new TestGenreDAL();
-        CollectionClass collectionClass = new CollectionClass(booksDALMock, collectionDALMock, genreDALMock);
+        CollectionClass collectionClass = new CollectionClass(collectionDALMock);
         
         // Act
         List<Books> result = collectionClass.ReturnBooksInCollection(1);
@@ -160,10 +138,8 @@ public class CollectionTest
     public void DeleteCollectionTest()
     {
         // Arrange
-        IBooks booksDALMock = new TestBooksDAL();
-        ICollection collectionDALMock = new TestCollectionDAL();
-        IGenre genreDALMock = new TestGenreDAL();
-        CollectionClass collectionClass = new CollectionClass(booksDALMock, collectionDALMock, genreDALMock);
+        ICollection collectionDALMock = new TestCollectionDAL(); 
+        CollectionClass collectionClass = new CollectionClass(collectionDALMock);
         
         // Act
         bool result = collectionClass.DeleteCollection(1);

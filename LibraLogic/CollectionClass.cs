@@ -18,26 +18,19 @@ namespace LibraLogic
         public string Name { get; set; }
 
         CollectionMapper _collectionMapper = new CollectionMapper();
-    
-        private readonly IConfiguration _configuration;
         BooksMapper _booksMapper = new BooksMapper();
-        private readonly IBooks _book;
         private readonly ICollection _collection;
-        private readonly IGenre _genre;   
+        private readonly IConfiguration _configuration;
         
-        public CollectionClass(IBooks books, ICollection collection, IGenre genre)
+        public CollectionClass(ICollection collection)
         {
-            _book = books;
             _collection = collection;
-            _genre = genre;
         }
         
         public CollectionClass(IConfiguration configuration)
         {
             _configuration = configuration;
-            _book = DALFactory.GetBooksDAL(configuration);
             _collection = DALFactory.GetCollectionDAL(configuration);
-            _genre = DALFactory.GetGenreDAL(configuration);
         }
         
         public CollectionClass()

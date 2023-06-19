@@ -13,12 +13,10 @@ public class GenreTest
     {
         // Arrange
         
-        IBooks booksDALMock = new TestBooksDAL();
-        ICollection collectionDALMock = new TestCollectionDAL();
         IGenreService genreServiceDALMock = new TestGenreDAL();
         IConfiguration configuration = new TestConfiguration();
         IGenre genreDALMock = new TestGenreDAL();
-        GenreService genreService = new GenreService(booksDALMock, collectionDALMock, genreServiceDALMock);
+        GenreService genreService = new GenreService(genreServiceDALMock);
         
         Genre genreClassMockData = new Genre(genreDALMock);
         {
@@ -38,12 +36,10 @@ public class GenreTest
     {
         // Arrange
         
-        IBooks booksDALMock = new TestBooksDAL();
-        ICollection collectionDALMock = new TestCollectionDAL();
         IGenreService genreServiceDALMock = new TestGenreDAL();
         IConfiguration configuration = new TestConfiguration();
         IGenre genreDALMock = new TestGenreDAL();
-        GenreService genreService = new GenreService(booksDALMock, collectionDALMock, genreServiceDALMock);
+        GenreService genreService = new GenreService(genreServiceDALMock);
         
         Genre genreClassMockData = new Genre(genreDALMock);
         {
@@ -62,11 +58,8 @@ public class GenreTest
     public void GetAllGenresTest()
     {
         // Arrange
-        
-        IBooks booksDALMock = new TestBooksDAL();
-        ICollection collectionDALMock = new TestCollectionDAL();
         IGenreService genreServiceDALMock = new TestGenreDAL();
-        GenreService genreService = new GenreService(booksDALMock, collectionDALMock, genreServiceDALMock);
+        GenreService genreService = new GenreService(genreServiceDALMock);
         
         // Act
         List<Genre> result = genreService.ReturnAllGenres();
@@ -80,10 +73,8 @@ public class GenreTest
     {
         // Arrange
         
-        IBooks booksDALMock = new TestBooksDAL();
-        ICollection collectionDALMock = new TestCollectionDAL();
         IGenreService genreServiceDALMock = new TestGenreDAL();
-        GenreService genreService = new GenreService(booksDALMock, collectionDALMock, genreServiceDALMock);
+        GenreService genreService = new GenreService(genreServiceDALMock);
         
         // Act
         List<Genre> result = genreService.ReturnGenresFromBook(1);

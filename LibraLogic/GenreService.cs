@@ -10,22 +10,16 @@ public class GenreService
 {
     private readonly IConfiguration _configuration;
     GenreMapper _genreMapper = new GenreMapper();
-    private readonly IBooks _book;
-    private readonly ICollection _collection;
     private readonly IGenreService _genreService;
     
     public GenreService(IConfiguration configuration)
     {
         _configuration = configuration;
-        _book = DALFactory.GetBooksDAL(configuration);
-        _collection = DALFactory.GetCollectionDAL(configuration);
         _genreService = DALFactory.GetGenreServiceDAL(configuration);
     }
     
-    public GenreService(IBooks books, ICollection collection, IGenreService genreService)
+    public GenreService(IGenreService genreService)
     {
-        _book = books;
-        _collection = collection;
         _genreService = genreService;
     }
     
