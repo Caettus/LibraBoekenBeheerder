@@ -41,7 +41,7 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Create()
         {
             //add collections to dropdown list
-            var collectionDropDownList = _collectionService.ReturnAllCollections(_configuration);
+            var collectionDropDownList = _collectionService.ReturnAllCollections();
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {
@@ -52,7 +52,7 @@ namespace LibraBoekenBeheerder.Controllers
             ViewBag.collectionDropDownList = items;
             
             //add genres to dropdown list
-            var genreDropDownList = _genreService.ReturnAllGenres(_configuration);
+            var genreDropDownList = _genreService.ReturnAllGenres();
 
             List<SelectListItem> genres = genreDropDownList.Select(cddl => new SelectListItem
             {
@@ -113,7 +113,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 //Return collections book is part of
-                var collectionDropDownList = _collectionService.ReturnCollectionsContaintingBook(id, _configuration);
+                var collectionDropDownList = _collectionService.ReturnCollectionsContaintingBook(id);
 
                 List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
                 {
@@ -123,7 +123,7 @@ namespace LibraBoekenBeheerder.Controllers
                 ViewBag.collectionDropDownList = items;
                 
                 //Return genres book has
-                var genreDropDownList = _genreService.ReturnGenresFromBook(id, _configuration);
+                var genreDropDownList = _genreService.ReturnGenresFromBook(id);
 
                 List<SelectListItem> genres = genreDropDownList.Select(cddl => new SelectListItem
                 {
@@ -201,7 +201,7 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Edit(int id)
         {
             IConfiguration configuration = _configuration;
-            var collectionDropDownList = _collectionService.ReturnCollectionsNotContaintingBook(id, configuration);
+            var collectionDropDownList = _collectionService.ReturnCollectionsNotContaintingBook(id);
 
             List<SelectListItem> items = collectionDropDownList.Select(cddl => new SelectListItem
             {

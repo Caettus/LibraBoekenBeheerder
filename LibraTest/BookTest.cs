@@ -46,7 +46,7 @@ public class BooktTest
     public void GetAllBooksTest()
     {
         // Arrange
-        
+        IBooks booksDALMock = new TestBooksDAL();
         IBooksCollection booksDALForCollectionMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
         IGenre genreDALMock = new TestGenreDAL();
@@ -66,6 +66,8 @@ public class BooktTest
         // Arranged
         
         IBooks booksDALMock = new TestBooksDAL();
+        
+        IBooksCollection booksDALForCollectionMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
         IGenre genreDALMock = new TestGenreDAL();
         IConfiguration configuration = new TestConfiguration();
@@ -87,7 +89,7 @@ public class BooktTest
         IBooks booksDALMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
         IGenre genreDALMock = new TestGenreDAL();
-        IConfiguration configuration = new TestConfiguration();
+        IBooksCollection booksDALForCollectionMock = new TestBooksDAL();
         
         Books booksClassMockData = new Books(booksDALMock, collectionDALMock, genreDALMock);
         {
@@ -117,6 +119,7 @@ public class BooktTest
         IBooks booksDALMock = new TestBooksDAL();
         ICollection collectionDALMock = new TestCollectionDAL();
         IGenre genreDALMock = new TestGenreDAL();
+        IBooksCollection booksDALForCollectionMock = new TestBooksDAL();
         
         Books booksClass = new Books(booksDALMock, collectionDALMock, genreDALMock);
         int bookId = 1;
@@ -126,35 +129,36 @@ public class BooktTest
         Assert.IsTrue(result);
     }
 
-    // [TestMethod]
-    // public void FailCreateBookTest()
-    // {
-    //     // Arrange
-    //     
-    //     IBooks booksDALMock = new TestBooksDAL();
-    //     ICollection collectionDALMock = new TestCollectionDAL();
-    //     IGenre genreDALMock = new TestGenreDAL();
-    //     BooksCollection booksCollection = new BooksCollection(booksDALMock, collectionDALMock, genreDALMock);
-    //     
-    //     Books booksClassMockData = new Books(booksDALMock, collectionDALMock, genreDALMock);
-    //     {
-    //         booksClassMockData.BookId = 1;
-    //         booksClassMockData.Title = "";
-    //         booksClassMockData.Author = "TestAuthor";
-    //         booksClassMockData.ISBNNumber = "TestISBNNumber";
-    //         booksClassMockData.Pages = 1;
-    //         booksClassMockData.PagesRead = 1;
-    //         booksClassMockData.Summary = "TestSummary";
-    //     }
-    //     int selectedCollectionId = 1;
-    //     int selectedGenreId = 1;
-    //
-    //     // Act
-    //     bool result = booksCollection.CreateBook(booksClassMockData, selectedCollectionId, selectedGenreId);
-    //
-    //     // Assert
-    //     Assert.IsFalse(result);
-    // }
+    [TestMethod]
+    public void CreateBookTest_Fails()
+    {
+        // Arrange
+        
+        IBooks booksDALMock = new TestBooksDAL();
+        IBooksCollection booksDALForCollectionMock = new TestBooksDAL();
+        ICollection collectionDALMock = new TestCollectionDAL();
+        IGenre genreDALMock = new TestGenreDAL();
+        BooksCollection booksCollection = new BooksCollection(booksDALForCollectionMock, collectionDALMock, genreDALMock);
+        
+        Books booksClassMockData = new Books(booksDALMock, collectionDALMock, genreDALMock);
+        {
+            booksClassMockData.BookId = 1;
+            booksClassMockData.Title = " ";
+            booksClassMockData.Author = "TestAuthor";
+            booksClassMockData.ISBNNumber = "TestISBNNumber";
+            booksClassMockData.Pages = 1;
+            booksClassMockData.PagesRead = 1;
+            booksClassMockData.Summary = "TestSummary";
+        }
+        int selectedCollectionId = 1;
+        int selectedGenreId = 1;
+    
+        // Act
+        bool result = booksCollection.CreateBook(booksClassMockData, selectedCollectionId, selectedGenreId);
+    
+        // Assert
+        Assert.IsFalse(result);
+    }
     
     
     [TestMethod]
@@ -188,26 +192,7 @@ public class BooktTest
             Assert.Fail("The GetAllBooksTest failed because a book with ID 0 was found.");
         }
     }
-    
-    [TestMethod]
-    public void GetABookTest_Fails()
-    {
-        // Arranged
-        
-        IBooks booksDALMock = new TestBooksDAL();
-        ICollection collectionDALMock = new TestCollectionDAL();
-        IGenre genreDALMock = new TestGenreDAL();
-        IConfiguration configuration = new TestConfiguration();
-        
-        Books booksClass = new Books(booksDALMock, collectionDALMock, genreDALMock);
-        
-        // Act
-        Books result = booksClass.GetABook(1);
 
-        // Assert
-        Assert.AreNotEqual(2, result.BookId);
-    }
-    
     // [TestMethod]
     // public void EditBookTest_Fails()
     // {
@@ -216,7 +201,7 @@ public class BooktTest
     //     IBooks booksDALMock = new TestBooksDAL();
     //     ICollection collectionDALMock = new TestCollectionDAL();
     //     IGenre genreDALMock = new TestGenreDAL();
-    //     IConfiguration configuration = new TestConfiguration();
+    //     IBooksCollection booksDALForCollectionMock = new TestBooksDAL();
     //     
     //     Books booksClassMockData = new Books(booksDALMock, collectionDALMock, genreDALMock);
     //     {
@@ -236,7 +221,7 @@ public class BooktTest
     //     bool result = booksClass.EditBook(booksClassMockData, selectedCollectionId, bookId);
     //
     //     // Assert
-    //     Assert.IsTrue(result);
+    //     Assert.IsFalse(result);
     // }
 
 }

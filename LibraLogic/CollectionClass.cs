@@ -45,7 +45,7 @@ namespace LibraLogic
             
         }
 
-        public CollectionClass ReturnACollection(IConfiguration configuration, int id)
+        public CollectionClass ReturnACollection(int id)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace LibraLogic
             return null;
         }
 
-        public List<Books> ReturnBooksInCollection(int id, IConfiguration configuration)
+        public List<Books> ReturnBooksInCollection(int id)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace LibraLogic
             return new List<Books>();
         }
 
-        public bool RemoveLinkBookToCollection(int CollectionID, int BookId, IConfiguration configuration)
+        public bool RemoveLinkBookToCollection(int CollectionID, int BookId)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace LibraLogic
             return false;
         }
         
-        public bool DeleteCollection(IConfiguration configuration, int id)
+        public bool DeleteCollection(int id)
         {
             try
             {

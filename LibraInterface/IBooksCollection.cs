@@ -7,4 +7,6 @@ public interface IBooksCollection
     bool CreateBook(BooksDTO booksDTO);
     
     List<BooksDTO> GetAllBooks();
+    
+    int GetLastInsertedBookId();
 }

@@ -12,7 +12,6 @@ public class GenreService
     GenreMapper _genreMapper = new GenreMapper();
     private readonly IBooks _book;
     private readonly ICollection _collection;
-    private readonly IGenre _genre;
     private readonly IGenreService _genreService;
     
     public GenreService(IConfiguration configuration)
@@ -20,17 +19,17 @@ public class GenreService
         _configuration = configuration;
         _book = DALFactory.GetBooksDAL(configuration);
         _collection = DALFactory.GetCollectionDAL(configuration);
-        _genre = DALFactory.GetGenreDAL(configuration);
+        _genreService = DALFactory.GetGenreServiceDAL(configuration);
     }
     
-    public GenreService(IBooks books, ICollection collection, IGenre genre)
+    public GenreService(IBooks books, ICollection collection, IGenreService genreService)
     {
         _book = books;
         _collection = collection;
-        _genre = genre;
+        _genreService = genreService;
     }
     
-    public List<Genre> ReturnAllGenres(IConfiguration configuration)
+    public List<Genre> ReturnAllGenres()
     {
         try
         {
@@ -52,10 +51,18 @@ public class GenreService
         var genreDTO = _genreMapper.toDTO(genreClass);
         try
         {
-            if (_genreService.CreateGenre(genreDTO))
+            if (genreClass.GenreName != " ")
             {
-                return true;
+                if (_genreService.CreateGenre(genreDTO))
+                {
+                    return true;
+                }
             }
+            else
+            {
+                return false;
+            }
+
         }
         catch (Exception e)
         {
@@ -65,11 +72,11 @@ public class GenreService
         return false;
     }
     
-    public List<Genre> ReturnGenresFromBook(int id, IConfiguration configuration)
+    public List<Genre> ReturnGenresFromBook(int id)
     {
         try
         {
-            List<GenreDTO> returnGenreDtoList = _genre.GetGenresFromBook(id);
+            List<GenreDTO> returnGenreDtoList = _genreService.GetGenresFromBook(id);
             List<Genre> returnGenreList = 
                 returnGenreDtoList.Select(_genreMapper.toClass).ToList();
 

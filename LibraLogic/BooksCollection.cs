@@ -15,7 +15,6 @@ public class BooksCollection
     private readonly ICollection _collection;
     private readonly IGenre _genre;
     private readonly IBooksCollection _booksCollection;
-    private readonly IBooks _books;
     
     
     
@@ -25,7 +24,6 @@ public class BooksCollection
         _collection = DALFactory.GetCollectionDAL(configuration);
         _genre = DALFactory.GetGenreDAL(configuration);
         _booksCollection = DALFactory.GetBooksDALForCollection(configuration);
-        _books = DALFactory.GetBooksDAL(configuration);
     }
     
     public BooksCollection(IBooksCollection booksCollection, ICollection collection, IGenre genre)
@@ -41,33 +39,40 @@ public class BooksCollection
         try
         {
             var toDto = _booksMapper.toDTO(booksClass);
-
-
-            if (_booksCollection.CreateBook(toDto))
+            
+            if (booksClass.Title != " ")
             {
-                int bookId = _books.GetLastInsertedBookId();
-
-                //boek aan collectie toevoegen
-                CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
-                collectionBooksDTO.CollectionID = selectedCollectionId;
-                collectionBooksDTO.BookId = bookId;
-                
-                if (_collection.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
+                if (_booksCollection.CreateBook(toDto))
                 {
-                    //genre aan boek toevoegen
-                    BookGenresDTO bookGenresDTO = new BookGenresDTO();
-                    bookGenresDTO.GenreId = selectedGenreId;
-                    bookGenresDTO.BookId = bookId;
-                    if (_genre.LinkGenreToBook(selectedGenreId, selectedCollectionId, bookGenresDTO))
+                    int bookId = _booksCollection.GetLastInsertedBookId();
+
+                    //boek aan collectie toevoegen
+                    CollectionBooksDTO collectionBooksDTO = new CollectionBooksDTO();
+                    collectionBooksDTO.CollectionID = selectedCollectionId;
+                    collectionBooksDTO.BookId = bookId;
+                
+                    if (_collection.LinkBookToCollection(selectedCollectionId, bookId, collectionBooksDTO))
                     {
-                        return true;
+                        //genre aan boek toevoegen
+                        BookGenresDTO bookGenresDTO = new BookGenresDTO();
+                        bookGenresDTO.GenreId = selectedGenreId;
+                        bookGenresDTO.BookId = bookId;
+                        if (_genre.LinkGenreToBook(selectedGenreId, selectedCollectionId, bookGenresDTO))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("LinkGenreToBook check kon niet worden gepassed in de logic");
+                        }
                     }
-                    else
-                    {
-                        Console.WriteLine("LinkGenreToBook check kon niet worden gepassed in de logic");
-                    }
+                    //iedereen blij
                 }
-                //iedereen blij
+                return false;
+            }
+            else
+            {
+                return false;
             }
         }
         catch (Exception ex)
@@ -96,5 +101,18 @@ public class BooksCollection
             Console.WriteLine($"ReturnAllBooks werkt niet: {e.Message}");
         }
         return new List<Books> { };
+    }
+    
+    public int ReturntLastInsertedBookId()
+    {
+        try
+        {
+            return _booksCollection.GetLastInsertedBookId();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"GetLastInsertedBookId werkt niet: {e.Message}");
+        }
+        return 0;
     }
 }

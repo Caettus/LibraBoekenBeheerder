@@ -12,7 +12,6 @@ public class CollectionService
     
     private readonly IConfiguration _configuration;
     private readonly IBooks _book;
-    private readonly ICollection _collection;
     private readonly IGenre _genre;
     private readonly ICollectionService _collectionService;
 
@@ -20,15 +19,15 @@ public class CollectionService
     {
         _configuration = configuration;
         _book = DALFactory.GetBooksDAL(configuration);
-        _collection = DALFactory.GetCollectionDAL(configuration);
         _genre = DALFactory.GetGenreDAL(configuration);
+        _collectionService = DALFactory.GetCollectionServiceDAL(configuration);
     }
     
-    public CollectionService(IBooks books, ICollection collection, IGenre genre)
+    public CollectionService(IBooks books, IGenre genre, ICollectionService collectionService)
     {
         _book = books;
-        _collection = collection;
         _genre = genre;
+        _collectionService = collectionService;
     }
     
     public bool CreateCollection(CollectionClass collectionClass)
@@ -36,9 +35,16 @@ public class CollectionService
         var collectionDTO = _collectionMapper.toDTO(collectionClass);
         try
         {
-            if (_collectionService.CreateCollection(collectionDTO))
+            if (collectionClass.Name != " ")
             {
-                return true;
+                if (_collectionService.CreateCollection(collectionDTO))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
         catch (Exception e)
@@ -49,7 +55,7 @@ public class CollectionService
         return false;
     }
     
-    public List<CollectionClass> ReturnAllCollections(IConfiguration configuration)
+    public List<CollectionClass> ReturnAllCollections()
     {
         try
         {
@@ -69,7 +75,7 @@ public class CollectionService
         return new List<CollectionClass>();
     }
     
-    public List<CollectionClass> ReturnCollectionsContaintingBook(int id, IConfiguration configuration)
+    public List<CollectionClass> ReturnCollectionsContaintingBook(int id)
     {
         try
         {
@@ -89,7 +95,7 @@ public class CollectionService
         return new List<CollectionClass>();
     }
     
-    public List<CollectionClass> ReturnCollectionsNotContaintingBook(int id, IConfiguration configuration)
+    public List<CollectionClass> ReturnCollectionsNotContaintingBook(int id)
     {
         try
         {

@@ -28,7 +28,7 @@ namespace LibraBoekenBeheerder.Controllers
 
             List<GenreModel> genreModels = new List<GenreModel>();
 
-            var genreList = _genreService.ReturnAllGenres(_config);
+            var genreList = _genreService.ReturnAllGenres();
             foreach (var genre in genreList)
             {
                 var modelItem = _genreMapper.toModel(genre);
@@ -48,6 +48,12 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (string.IsNullOrEmpty(genreModel.GenreName))
+                    {
+                        ModelState.AddModelError("Name", "Name is required.");
+                        return View(genreModel);
+                    }
+                    
                     var genre = _genreMapper.toClass(genreModel);
 
                     if (_genreService.CreateGenre(genre, _config))

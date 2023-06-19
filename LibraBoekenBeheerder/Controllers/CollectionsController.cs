@@ -38,7 +38,7 @@ namespace LibraBoekenBeheerder.Controllers
 
             List<CollectionsModel> collectionsModels = new List<CollectionsModel>();
 
-            var dtoList = _collectionService.ReturnAllCollections(_configuration);
+            var dtoList = _collectionService.ReturnAllCollections();
             foreach (var dtoItem in dtoList)
             {
                 var modelItem = _collectionsMapper.toModel(dtoItem);
@@ -66,6 +66,12 @@ namespace LibraBoekenBeheerder.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (string.IsNullOrEmpty(collectionsModel.Name))
+                    {
+                        ModelState.AddModelError("Name", "Name is required.");
+                        return View(collectionsModel);
+                    }
+                     
                     var _dto = _collectionsMapper.toClass(collectionsModel);
                     if (_collectionService.CreateCollection(_dto))
                     {
@@ -92,7 +98,7 @@ namespace LibraBoekenBeheerder.Controllers
             try
             {
                 IConfiguration config = _configuration;
-                var collectionBooksList = _collectionClassClass.ReturnBooksInCollection(id, config);
+                var collectionBooksList = _collectionClassClass.ReturnBooksInCollection(id);
         
                 List<BooksModel> items = collectionBooksList.Select(cddl => new BooksModel
                 {
@@ -102,7 +108,7 @@ namespace LibraBoekenBeheerder.Controllers
         
                 ViewBag.collectionBooksList = items;
         
-                var collectionDto = _collectionClassClass.ReturnACollection(config, id);
+                var collectionDto = _collectionClassClass.ReturnACollection(id);
         
                 if (collectionDto != null)
                 {
@@ -126,7 +132,7 @@ namespace LibraBoekenBeheerder.Controllers
         {
             IConfiguration configuration = _configuration;
 
-            if (_collectionClassClass.RemoveLinkBookToCollection(collectionID, bookId, _configuration))
+            if (_collectionClassClass.RemoveLinkBookToCollection(collectionID, bookId))
             {
                 ViewBag.Message = "Book succesfully removed from collection";
                 ModelState.Clear();
@@ -145,7 +151,7 @@ namespace LibraBoekenBeheerder.Controllers
         public ActionResult Delete(int id)
         {
                 
-            if (_collectionClassClass.DeleteCollection(_configuration, id))
+            if (_collectionClassClass.DeleteCollection(id))
             {
                 ViewBag.Message = "Collection succesfully deleted";
                 ModelState.Clear();
