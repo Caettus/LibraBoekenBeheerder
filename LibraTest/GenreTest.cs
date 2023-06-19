@@ -23,7 +23,7 @@ public class GenreTest
         Genre genreClassMockData = new Genre(genreDALMock);
         {
             genreClassMockData.GenreId = 1;
-            genreClassMockData.GenreName = "TestGenreName";
+            genreClassMockData.GenreName = "TestGenre";
         }
 
         // Act
